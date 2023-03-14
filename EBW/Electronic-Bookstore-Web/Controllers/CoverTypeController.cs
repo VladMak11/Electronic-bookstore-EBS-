@@ -55,6 +55,7 @@ namespace Electronic_Bookstore_Web.Controllers
                 if (obj.Id == 0)
                 {
                     await _db.CoverTypes.AddAsync(obj);
+                    TempData["success"] = "Cover Type added";
                 }
                 else
                 {
@@ -98,6 +99,7 @@ namespace Electronic_Bookstore_Web.Controllers
                 return NotFound();
             }
             _db.CoverTypes.Remove(covertype);
+            TempData["success"] = "Cover Type deleted";
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
