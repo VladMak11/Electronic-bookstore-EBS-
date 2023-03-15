@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Electronic-Bookstore-Web", "Electronic-Bookstore-Web\Electronic-Bookstore-Web.csproj", "{CE1051AD-D3A3-4724-9A14-CA2A520933F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Electronic-Bookstore-Web", "Electronic-Bookstore-Web\Electronic-Bookstore-Web.csproj", "{CE1051AD-D3A3-4724-9A14-CA2A520933F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBW.DataAccess", "EBS.DataAccess\EBW.DataAccess.csproj", "{6A704C6A-24D8-4F52-ABF2-3CBDC460EEB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBW.Models", "EBW.Models\EBW.Models.csproj", "{5DE5A7B8-423B-4153-BECC-871C40F0C8D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{CE1051AD-D3A3-4724-9A14-CA2A520933F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE1051AD-D3A3-4724-9A14-CA2A520933F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE1051AD-D3A3-4724-9A14-CA2A520933F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A704C6A-24D8-4F52-ABF2-3CBDC460EEB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A704C6A-24D8-4F52-ABF2-3CBDC460EEB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A704C6A-24D8-4F52-ABF2-3CBDC460EEB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A704C6A-24D8-4F52-ABF2-3CBDC460EEB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DE5A7B8-423B-4153-BECC-871C40F0C8D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DE5A7B8-423B-4153-BECC-871C40F0C8D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DE5A7B8-423B-4153-BECC-871C40F0C8D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DE5A7B8-423B-4153-BECC-871C40F0C8D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

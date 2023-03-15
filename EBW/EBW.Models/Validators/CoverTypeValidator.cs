@@ -1,7 +1,7 @@
-﻿using Electronic_Bookstore_Web.Models;
+﻿
 using FluentValidation;
 
-namespace Electronic_Bookstore_Web.Validators
+namespace EBW.Models
 {
     public class CoverTypeValidator : AbstractValidator<CoverType>
     {

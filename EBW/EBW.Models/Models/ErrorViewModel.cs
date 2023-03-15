@@ -1,4 +1,4 @@
-namespace Electronic_Bookstore_Web.Models
+namespace EBW.Models
 {
     public class ErrorViewModel
     {

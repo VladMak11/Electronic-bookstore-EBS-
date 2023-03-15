@@ -1,6 +1,5 @@
-﻿using Electronic_Bookstore_Web.Data;
-using Electronic_Bookstore_Web.Models;
-using Electronic_Bookstore_Web.Validators;
+﻿using EBW.DataAccess;
+using EBW.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;

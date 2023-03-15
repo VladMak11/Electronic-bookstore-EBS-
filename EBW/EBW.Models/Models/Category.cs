@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Electronic_Bookstore_Web.Models
+namespace EBW.Models
 {
-    public class CoverType
+    public class Category
     {
         [Key]
         public int Id { get; set; }
-        [Required, DisplayName("Cover Type name"),MaxLength(20)]
+        [Required]
         public string Name { get; set; }
     }
 }

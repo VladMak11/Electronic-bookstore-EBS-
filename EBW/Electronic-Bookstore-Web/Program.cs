@@ -1,6 +1,7 @@
 
 
-using Electronic_Bookstore_Web.Data;
+
+using EBW.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

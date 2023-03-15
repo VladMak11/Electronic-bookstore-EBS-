@@ -1,7 +1,7 @@
-﻿using Electronic_Bookstore_Web.Models;
+﻿using EBW.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Electronic_Bookstore_Web.Data
+namespace EBW.DataAccess
 {
     public class ApplicationDBContext : DbContext
     {
