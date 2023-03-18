@@ -8,7 +8,8 @@ namespace EBW.Models
         public CoverTypeValidator()
         {
             RuleFor(covertype => covertype.Name)
-                .Length(3, 20).WithMessage("Min length, it's 3 characters.");
+               .NotEmpty().WithMessage("The field can't be empty")
+               .Length(3, 20).WithMessage("The Category name must be between 3 and 20 characters");
         }
     }
 }

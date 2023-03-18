@@ -1,5 +1,6 @@
 ﻿using EBW.DataAccess;
 using EBW.Models;
+using EBW.Models.Validators;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Electronic_Bookstore_Web.Controllers
@@ -37,6 +38,13 @@ namespace Electronic_Bookstore_Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpsertPostAsync(Author obj)
         {
+            var localvalidator = new AuthorValidator();
+            var result = localvalidator.Validate(obj);
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
             if (ModelState.IsValid)
             {
                 if (obj.Id == 0)

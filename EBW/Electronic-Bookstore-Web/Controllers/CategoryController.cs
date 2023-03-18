@@ -1,6 +1,8 @@
 ﻿using EBW.DataAcces;
 using EBW.DataAccess;
 using EBW.Models;
+using EBW.Models.Validators;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Electronic_Bookstore_Web.Controllers
@@ -39,6 +41,13 @@ namespace Electronic_Bookstore_Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpsertPostAsync(Category obj)
         {
+            var localvalidator = new CategoryValidator();
+            var result = localvalidator.Validate(obj);
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
             if (ModelState.IsValid)
             {
                 if (obj.Id == 0)
