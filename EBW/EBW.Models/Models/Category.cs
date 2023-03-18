@@ -3,11 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EBW.Models
 {
-    public class Category
+    public class Category : IndetifiedModel
     {
-        [Key]
-        public int Id { get; set; }
-        [Required]
+        [Required, DisplayName("Category name"), MaxLength(20), MinLength(3)]
         public string Name { get; set; }
     }
 }

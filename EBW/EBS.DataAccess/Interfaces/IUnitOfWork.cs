@@ -10,6 +10,7 @@ namespace EBW.DataAccess
     public interface IUnitOfWork
     {
         IRepository<CoverType> CoverType { get; }
+        IRepository<Category> Category { get; }
         Task SaveAsync();
     }
 }

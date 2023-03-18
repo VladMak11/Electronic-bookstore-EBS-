@@ -8,6 +8,6 @@ namespace EBW.DataAccess
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
 
         public DbSet<CoverType> CoverTypes { get; set; }
-
+        public DbSet<Category> Categories { get; set; }
     }
 }
