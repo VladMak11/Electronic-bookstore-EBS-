@@ -9,5 +9,6 @@ namespace EBW.DataAccess
 
         public DbSet<CoverType> CoverTypes { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Author> Authors { get; set; }
     }
 }

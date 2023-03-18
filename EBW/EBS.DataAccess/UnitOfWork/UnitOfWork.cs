@@ -14,11 +14,14 @@ namespace EBW.DataAcces
 
         public IRepository<CoverType> CoverType { get; private set; }
         public IRepository<Category> Category { get; private set; }
+        public IRepository<Author> Author { get; private set; }
+        
         public UnitOfWork(ApplicationDBContext db)
         {
             _db = db;
             CoverType = new Repository<CoverType>(_db);
             Category = new Repository<Category>(_db);
+            Author = new Repository<Author>(_db);
         }
 
         public async Task SaveAsync()

@@ -1,0 +1,29 @@
+﻿@model Author
+@{
+    ViewData["Title"] = "Deleting Author: " + Model.FullName;
+}
+
+<div class="form-location">
+    <div></div>
+    <form method="post" asp-controller="Author" asp-action="Delete">
+        <input asp-for="Id" hidden />
+        <div class="align-content-center" style="display: flex; justify-content: center;">
+            <div class="col-10">
+                <div class="border p-3 mt-4 row">
+                    <div class="col-12 pb-2">
+                        <h3 class="text-primary">Deleting Cover Type</h3>
+                        <hr />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="FullName"></label>
+                        <input asp-for="FullName" disabled class="form-control" />
+                    </div>
+                    <div class="col-12 text-center">
+                        <a asp-controller="Author" asp-action="Index" class="btn btn-primary" style="width:150px">Cancel</a>
+                        <button type="submit" class="btn btn-danger" style="width:150px">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form><div></div>
+</div>

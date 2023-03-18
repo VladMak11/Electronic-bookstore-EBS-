@@ -11,6 +11,7 @@ namespace EBW.DataAccess
     {
         IRepository<CoverType> CoverType { get; }
         IRepository<Category> Category { get; }
+        IRepository<Author> Author { get; }
         Task SaveAsync();
     }
 }
