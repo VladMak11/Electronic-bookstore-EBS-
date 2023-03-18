@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EBW.Models
 {
-    public class CoverType
+    public class CoverType : IndetifiedModel
     {
-        [Key]
-        public int Id { get; set; }
         [Required, DisplayName("Cover Type name"), MaxLength(20)]
         public string Name { get; set; }
     }

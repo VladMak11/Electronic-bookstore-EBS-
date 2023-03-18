@@ -1,4 +1,5 @@
-﻿using EBW.DataAccess;
+﻿
+using EBW.DataAccess;
 using EBW.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,15 +9,15 @@ namespace Electronic_Bookstore_Web.Controllers
 {
     public class CoverTypeController : Controller
     {
-        private readonly ApplicationDBContext _db;
-        public CoverTypeController(ApplicationDBContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public CoverTypeController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<CoverType> objCoverTypeList = await _db.CoverTypes.ToListAsync();
+            IEnumerable<CoverType> objCoverTypeList = await _unitOfWork.CoverType.GetAllAsync();
             return View(objCoverTypeList);
         }
 
@@ -32,7 +33,7 @@ namespace Electronic_Bookstore_Web.Controllers
             }
             else
             {
-                covertype = await _db.CoverTypes.FirstOrDefaultAsync(u => u.Id == id);
+                covertype = await _unitOfWork.CoverType.GetFirstOrDefaultAsync(x => x.Id == id);
                 return View(covertype);
             }
         }
@@ -53,15 +54,15 @@ namespace Electronic_Bookstore_Web.Controllers
             {
                 if (obj.Id == 0)
                 {
-                    await _db.CoverTypes.AddAsync(obj);
+                    await _unitOfWork.CoverType.AddAsync(obj);
                     TempData["success"] = "Cover Type added";
                 }
                 else
                 {
-                    _db.CoverTypes.Update(obj);
+                    await _unitOfWork.CoverType.UpdateAsync(obj);
                 }
 
-                await _db.SaveChangesAsync();
+                await _unitOfWork.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
 
@@ -76,7 +77,7 @@ namespace Electronic_Bookstore_Web.Controllers
                 return NotFound();
             }
 
-            var covertype = await _db.CoverTypes.FirstOrDefaultAsync(u => u.Id == id);
+            var covertype = await _unitOfWork.CoverType.GetFirstOrDefaultAsync(u => u.Id == id);
 
             if (covertype == null)
             {
@@ -89,17 +90,17 @@ namespace Electronic_Bookstore_Web.Controllers
         //POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePostAsync(int? id)
+        public async Task<IActionResult> DeletePostAsync(int id)
         {
-            var covertype = await _db.CoverTypes.FirstOrDefaultAsync(u => u.Id == id);
+            var covertype = await _unitOfWork.CoverType.GetFirstOrDefaultAsync(u => u.Id == id);
 
             if (covertype == null)
             {
                 return NotFound();
             }
-            _db.CoverTypes.Remove(covertype);
+            await _unitOfWork.CoverType.RemoveAsync(id);
             TempData["success"] = "Cover Type deleted";
-            await _db.SaveChangesAsync();
+            await _unitOfWork.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
     }
