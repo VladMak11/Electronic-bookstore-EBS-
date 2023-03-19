@@ -16,8 +16,8 @@ namespace Electronic_Bookstore_Web.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Category> objCoverTypeList = await _unitOfWork.Category.GetAllAsync();
-            return View(objCoverTypeList);
+            IEnumerable<Category> objCategoryList = await _unitOfWork.Category.GetAllAsync();
+            return View(objCategoryList);
         }
 
         //GET

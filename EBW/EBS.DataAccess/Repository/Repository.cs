@@ -28,7 +28,8 @@ namespace EBW.DataAccess
 
         public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? paramFilter = null)
         {
-            IQueryable<T> curentQuery = _dbSet;
+            IQueryable<T> curentQuery = _dbSet; 
+
             return await _dbSet.ToListAsync();
         }
 

@@ -14,8 +14,8 @@ namespace Electronic_Bookstore_Web.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Author> objCoverTypeList = await _unitOfWork.Author.GetAllAsync();
-            return View(objCoverTypeList);
+            IEnumerable<Author> objAuthorList = await _unitOfWork.Author.GetAllAsync();
+            return View(objAuthorList);
         }
         //GET
         [HttpGet, ActionName("Upsert")]
