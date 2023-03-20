@@ -16,19 +16,21 @@
     </div>
     <br />
 
-    <table class="table table-bordered table-hover" style="width:100%;margin:auto">
+    <table id="productTable" class="table table-bordered table-hover" style="width:100%;margin:auto">
         <thead>
             <tr class="table-info">
                 <th>Title</th>
-                <th>Author</th>
                 <th>ISBN</th>
-                <th>Description</th>
+                <th>Price</th>
                 <th>Category</th>
                 <th>Cover Type</th>
+                <th>Author</th>
+                @*<th>Description</th>*@
+                
                 <th></th>
         </thead>
         <tbody>
-            @foreach (var obj in Model)
+           @* @foreach (var obj in Model)
             {
                 @*<tr width>
                     <td width="30%">@obj.Title</td>
@@ -43,7 +45,11 @@
                         </div>
                     </td>
                 </tr>*@
-            }
+            @*}*@
         </tbody>
     </table>
 </div>
+
+@section Scripts{
+    <script src="~/js/product.js"></script>
+}

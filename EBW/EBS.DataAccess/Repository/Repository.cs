@@ -18,6 +18,7 @@ namespace EBW.DataAccess
         public Repository(ApplicationDBContext db)
         {
             _db = db;
+            //_db.Products.Include(x => x.Category).Include(x => x.Author).Include(x => x.CoverType);
             _dbSet = _db.Set<T>();
         }
 
@@ -25,18 +26,35 @@ namespace EBW.DataAccess
         {
             await _dbSet.AddAsync(item);
         }
-
-        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? paramFilter = null)
+        /// <summary>
+        /// includePro - "Author,Category,CoverType".
+        /// </summary>
+        /// <param name="includeProp"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<T>> GetAllAsync(params string[] includeProp)
         {
             IQueryable<T> curentQuery = _dbSet; 
-
-            return await _dbSet.ToListAsync();
+            if(includeProp != null)
+            {
+                foreach(var itemProp in includeProp)
+                {
+                    curentQuery = curentQuery.Include(itemProp);
+                }
+            }
+            return await curentQuery.ToListAsync();
         }
 
-        public async Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> paramFilter)
+        public async Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> paramFilter, string? includeProp = null)
         {
             IQueryable<T> curentQuery = _dbSet;
             curentQuery = curentQuery.Where(paramFilter);
+            //if (includeProp != null)
+            //{
+            //    foreach (var itemProp in includeProp.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            //    {
+            //        curentQuery = curentQuery.Include(itemProp);
+            //    }
+            //}
             return await curentQuery.FirstOrDefaultAsync();
         }
 

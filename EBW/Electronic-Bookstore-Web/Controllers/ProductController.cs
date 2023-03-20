@@ -4,12 +4,12 @@ using EBW.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using EBW.DataAccess.ViewModels;
+using EBW.DataAcces;
 
 namespace Electronic_Bookstore_Web.Controllers
 {
     public class ProductController : Controller
     {
-
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _hostEnvironment;
 
@@ -21,8 +21,9 @@ namespace Electronic_Bookstore_Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Product> objProductList = await _unitOfWork.Product.GetAllAsync();
-            return View(objProductList);
+            //IEnumerable<Product> objProductList = await _unitOfWork.Product.GetAllAsync();
+            //return View(objProductList);
+            return View();
         }
         //GET
         [HttpGet, ActionName("Upsert")]
@@ -53,7 +54,7 @@ namespace Electronic_Bookstore_Web.Controllers
 
         [HttpPost, ActionName("Upsert")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpsertPostAsync(ProductVM obj, IFormFile file)
+        public async Task<IActionResult> UpsertPostAsync(ProductVM obj, IFormFile? file)
         {
             //var localvalidator = new AuthorValidator();
             //var result = localvalidator.Validate(obj);
@@ -64,6 +65,19 @@ namespace Electronic_Bookstore_Web.Controllers
             //}
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                if(file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(wwwRootPath,@"images\products");  
+                    var extension = Path.GetExtension(file.FileName);
+
+                    using (var fileStreams = new FileStream(Path.Combine(uploads,fileName+extension),FileMode.Create))
+                    {
+                        file.CopyTo(fileStreams);
+                    }
+                    obj.Product.ImageUrl = @"\images\products" + fileName + extension;
+                }
                 if (obj.Product.Id == 0)
                 {
                     await _unitOfWork.Product.AddAsync(obj.Product);
@@ -117,6 +131,14 @@ namespace Electronic_Bookstore_Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-    }
+        #region API CALLS
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var productList = await _unitOfWork.Product.GetAllAsync("Author","Category","CoverType");
+            return Json(new { data = productList });
+        }
+        #endregion
 
+    }
 }

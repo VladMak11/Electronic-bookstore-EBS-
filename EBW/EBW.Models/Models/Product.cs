@@ -23,7 +23,7 @@ namespace EBW.Models
         [Required]
         public decimal Price { get; set; }
 
-        [Required, MaxLength(256)]
+        [ValidateNever]
         public string ImageUrl { get; set; }
 
         //-- FK for linked tables in the database --//
