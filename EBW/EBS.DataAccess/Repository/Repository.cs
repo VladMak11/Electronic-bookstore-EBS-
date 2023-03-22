@@ -18,7 +18,6 @@ namespace EBW.DataAccess
         public Repository(ApplicationDBContext db)
         {
             _db = db;
-            //_db.Products.Include(x => x.Category).Include(x => x.Author).Include(x => x.CoverType);
             _dbSet = _db.Set<T>();
         }
 
@@ -44,17 +43,17 @@ namespace EBW.DataAccess
             return await curentQuery.ToListAsync();
         }
 
-        public async Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> paramFilter, string? includeProp = null)
+        public async Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> paramFilter, params string[] includeProp)
         {
             IQueryable<T> curentQuery = _dbSet;
             curentQuery = curentQuery.Where(paramFilter);
-            //if (includeProp != null)
-            //{
-            //    foreach (var itemProp in includeProp.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            //    {
-            //        curentQuery = curentQuery.Include(itemProp);
-            //    }
-            //}
+            if (includeProp != null)
+            {
+                foreach (var itemProp in includeProp)
+                {
+                    curentQuery = curentQuery.Include(itemProp);
+                }
+            }
             return await curentQuery.FirstOrDefaultAsync();
         }
 

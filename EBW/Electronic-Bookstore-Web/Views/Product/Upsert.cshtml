@@ -3,9 +3,9 @@
     ViewData["Title"] = Model.Product.Id != 0 ? "Product Editing: " + Model.Product.Title : "New Product";
 }
 
-<form method="post" asp-action="Upsert" enctype="multipart/form-data" class="">
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
 	<input asp-for="Product.Id" hidden />
-	@*<input asp-for="Product.ImageUrl" hidden />*@
+	<input asp-for="Product.ImageUrl" hidden />
 	<div class="row">
         <div class="col-10 mx-auto">
 			<div class="border p-3 mt-4 row">
@@ -77,10 +77,9 @@
 				</div>
 			</div>
 		</div>
-		@*<div class="col-2 pt-4">
-			<img src="@Model.Product.ImageUrl"
-				 width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
-		</div>*@
+        <div class="mb-3 col-2 pt-4">
+			<img src="@Model.Product.ImageUrl" class="d-block user-select-none" width="100%" style="border-radius:10px; border:2px solid #bbb9b9" />
+		</div>
 	</div>
 </form>
 

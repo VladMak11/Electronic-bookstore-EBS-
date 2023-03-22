@@ -10,7 +10,7 @@ namespace EBW.DataAccess
 {
     public interface IRepository<T> where T : IndetifiedModel
     {
-        Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> paramFilter, string? includeProp = null);
+        Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> paramFilter, params string[] includeProp);
         Task<IEnumerable<T>> GetAllAsync(params string[] includeProp );
         Task AddAsync(T item);
         Task RemoveAsync(int id);
