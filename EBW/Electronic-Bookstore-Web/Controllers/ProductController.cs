@@ -19,10 +19,8 @@ namespace Electronic_Bookstore_Web.Controllers
             _hostEnvironment = hostEnvironment;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            //IEnumerable<Product> objProductList = await _unitOfWork.Product.GetAllAsync();
-            //return View(objProductList);
             return View();
         }
         //GET
@@ -32,22 +30,29 @@ namespace Electronic_Bookstore_Web.Controllers
             var categories = await _unitOfWork.Category.GetAllAsync();
             var covertypes = await _unitOfWork.CoverType.GetAllAsync();
             var authors = await _unitOfWork.Author.GetAllAsync();
-
-            ProductVM productVM = new()
-            {
-                Product = new(),
-                CategoryList = categories.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
-                CoverTypeList = covertypes.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
-                AuthorList = authors.Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() })
-            };
+            ProductVM productVM = null;
+            //productVM = new ProductVM(categories, covertypes, authors)
+            //{
+            //    Product = new(),
+            //    //CategoryList = categories.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
+            //    //CoverTypeList = covertypes.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
+            //    //AuthorList = authors.Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() })
+            //};
 
             if (id == null || id == 0)
             {
+                //
+                productVM = new ProductVM(categories, covertypes, authors);
                 return View(productVM);
             }
             else
             {
-                productVM.Product = await _unitOfWork.Product.GetFirstOrDefaultAsync(x => x.Id == id);
+                var product = await _unitOfWork.Product.GetFirstOrDefaultAsync(x => x.Id == id);
+                productVM = new ProductVM(categories, covertypes, authors)
+                {
+                    Product = product
+                };
+                //productVM.Product = await _unitOfWork.Product.GetFirstOrDefaultAsync(x => x.Id == id);
                 return View(productVM);
             }
         }
@@ -56,13 +61,13 @@ namespace Electronic_Bookstore_Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpsertPostAsync(ProductVM obj, IFormFile? file)
         {
-            //var localvalidator = new AuthorValidator();
-            //var result = localvalidator.Validate(obj);
+            var localvalidator = new ProductValidator();
+            var result = localvalidator.Validate(obj);
 
-            //foreach (var error in result.Errors)
-            //{
-            //    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-            //}
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
             if (ModelState.IsValid)
             {
                 string wwwRootPath = _hostEnvironment.WebRootPath;
@@ -99,44 +104,17 @@ namespace Electronic_Bookstore_Web.Controllers
                 await _unitOfWork.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
+            else
+            {
+                var categories = await _unitOfWork.Category.GetAllAsync();
+                var covertypes = await _unitOfWork.CoverType.GetAllAsync();
+                var authors = await _unitOfWork.Author.GetAllAsync();
+                obj.CategoryList = categories.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+                obj.CoverTypeList = covertypes.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+                obj.AuthorList = authors.Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() });
+            }
 
             return View(obj);
-        }
-
-        //GET
-        [HttpGet, ActionName("Delete")]
-        public async Task<IActionResult> DeleteGetAsync(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-
-            var product = await _unitOfWork.Product.GetFirstOrDefaultAsync(u => u.Id == id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
-
-        //POST
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePostAsync(int id)
-        {
-            var product = await _unitOfWork.Product.GetFirstOrDefaultAsync(u => u.Id == id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-            await _unitOfWork.Product.RemoveAsync(id);
-            TempData["success"] = "Product deleted";
-            await _unitOfWork.SaveAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         #region API CALLS
@@ -145,6 +123,25 @@ namespace Electronic_Bookstore_Web.Controllers
         {
             var productList = await _unitOfWork.Product.GetAllAsync("Author","Category","CoverType");
             return Json(new { data = productList });
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var product = await _unitOfWork.Product.GetFirstOrDefaultAsync(u => u.Id == id);
+
+            if (product == null)
+            {
+                return Json(new { success = false, message = "Error while deleting"});
+            }
+            var oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, product.ImageUrl.TrimStart('\\'));
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+            await _unitOfWork.Product.RemoveAsync(id);
+            await _unitOfWork.SaveAsync();
+            return Json(new { success = true, message = "Delete Successful" });
         }
         #endregion
 

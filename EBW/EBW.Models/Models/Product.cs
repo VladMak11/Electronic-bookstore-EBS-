@@ -12,16 +12,17 @@ namespace EBW.Models
 {
     public class Product : IndetifiedModel
     {
-        [Required, MaxLength(25), MinLength(3)]
+        [Required(ErrorMessage = "The field can't be empty"), MaxLength(25), MinLength(3)]
         public string Title { get; set; }
 
         [MaxLength(4000)]
-        public string Description { get; set; }
-        [Required, MaxLength(17)]
+        public string? Description { get; set; }
+        [Required(ErrorMessage = "The field can't be empty"), MaxLength(17), RegularExpression(@"^\d{17}$", ErrorMessage = "ISBN must be 17 characters")]
         public string ISBN { get; set; }
+        public decimal? Price { get; set; }
+        [Required(ErrorMessage = "The field can't be empty")]
         public decimal ListPrice { get; set; }
-        [Required]
-        public decimal Price { get; set; }
+        
 
         [ValidateNever]
         public string ImageUrl { get; set; }
