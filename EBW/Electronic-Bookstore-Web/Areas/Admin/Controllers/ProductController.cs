@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using EBW.DataAccess.ViewModels;
 using EBW.DataAcces;
 
-namespace Electronic_Bookstore_Web.Controllers
+namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -60,12 +61,12 @@ namespace Electronic_Bookstore_Web.Controllers
             if (ModelState.IsValid)
             {
                 string wwwRootPath = _hostEnvironment.WebRootPath;
-                if(file != null)
+                if (file != null)
                 {
                     string fileName = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(wwwRootPath,@"images\products");  
+                    var uploads = Path.Combine(wwwRootPath, @"images\products");
                     var extension = Path.GetExtension(file.FileName);
-                    if(obj.Product.ImageUrl != null)
+                    if (obj.Product.ImageUrl != null)
                     {
                         var oldImagePath = Path.Combine(wwwRootPath, obj.Product.ImageUrl.TrimStart('\\'));
                         if (System.IO.File.Exists(oldImagePath))
@@ -74,7 +75,7 @@ namespace Electronic_Bookstore_Web.Controllers
                         }
                     }
 
-                    using (var fileStreams = new FileStream(Path.Combine(uploads,fileName+extension),FileMode.Create))
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
                     {
                         file.CopyTo(fileStreams);
                     }
@@ -103,7 +104,6 @@ namespace Electronic_Bookstore_Web.Controllers
                 Product = obj.Product,
             };
 
-
             return View(obj);
         }
 
@@ -111,7 +111,7 @@ namespace Electronic_Bookstore_Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var productList = await _unitOfWork.Product.GetAllAsync("Author","Category","CoverType");
+            var productList = await _unitOfWork.Product.GetAllAsync("Author", "Category", "CoverType");
             return Json(new { data = productList });
         }
 
@@ -122,7 +122,7 @@ namespace Electronic_Bookstore_Web.Controllers
 
             if (product == null)
             {
-                return Json(new { success = false, message = "Error while deleting"});
+                return Json(new { success = false, message = "Error while deleting" });
             }
             var oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, product.ImageUrl.TrimStart('\\'));
             if (System.IO.File.Exists(oldImagePath))

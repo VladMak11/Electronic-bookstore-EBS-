@@ -1,44 +1,48 @@
-﻿using EBW.DataAccess;
+﻿using EBW.DataAcces;
+using EBW.DataAccess;
 using EBW.Models;
 using EBW.Models.Validators;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Electronic_Bookstore_Web.Controllers
+namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
 {
-    public class AuthorController : Controller
+    [Area("Admin")]
+    public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public AuthorController(IUnitOfWork unitOfWork)
+        public CategoryController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Author> objAuthorList = await _unitOfWork.Author.GetAllAsync();
-            return View(objAuthorList);
+            IEnumerable<Category> objCategoryList = await _unitOfWork.Category.GetAllAsync();
+            return View(objCategoryList);
         }
+
         //GET
         [HttpGet, ActionName("Upsert")]
         public async Task<IActionResult> UpsertGetAsync(int? id)
         {
-            Author author = new();
+            Category category = new();
 
             if (id == null || id == 0)
             {
-                return View(author);
+                return View(category);
             }
             else
             {
-                author = await _unitOfWork.Author.GetFirstOrDefaultAsync(x => x.Id == id);
-                return View(author);
+                category = await _unitOfWork.Category.GetFirstOrDefaultAsync(x => x.Id == id);
+                return View(category);
             }
         }
 
         [HttpPost, ActionName("Upsert")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpsertPostAsync(Author obj)
+        public async Task<IActionResult> UpsertPostAsync(Category obj)
         {
-            var localvalidator = new AuthorValidator();
+            var localvalidator = new CategoryValidator();
             var result = localvalidator.Validate(obj);
 
             foreach (var error in result.Errors)
@@ -49,12 +53,12 @@ namespace Electronic_Bookstore_Web.Controllers
             {
                 if (obj.Id == 0)
                 {
-                    await _unitOfWork.Author.AddAsync(obj);
-                    TempData["success"] = "Author added";
+                    await _unitOfWork.Category.AddAsync(obj);
+                    TempData["success"] = "Category added";
                 }
                 else
                 {
-                    await _unitOfWork.Author.UpdateAsync(obj);
+                    await _unitOfWork.Category.UpdateAsync(obj);
                 }
 
                 await _unitOfWork.SaveAsync();
@@ -73,14 +77,14 @@ namespace Electronic_Bookstore_Web.Controllers
                 return NotFound();
             }
 
-            var author = await _unitOfWork.Author.GetFirstOrDefaultAsync(u => u.Id == id);
+            var category = await _unitOfWork.Category.GetFirstOrDefaultAsync(u => u.Id == id);
 
-            if (author == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(author);
+            return View(category);
         }
 
         //POST
@@ -88,14 +92,14 @@ namespace Electronic_Bookstore_Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePostAsync(int id)
         {
-            var author = await _unitOfWork.Author.GetFirstOrDefaultAsync(u => u.Id == id);
+            var category = await _unitOfWork.Category.GetFirstOrDefaultAsync(u => u.Id == id);
 
-            if (author == null)
+            if (category == null)
             {
                 return NotFound();
             }
-            await _unitOfWork.Author.RemoveAsync(id);
-            TempData["success"] = "Author deleted";
+            await _unitOfWork.Category.RemoveAsync(id);
+            TempData["success"] = "Category deleted";
             await _unitOfWork.SaveAsync();
             return RedirectToAction(nameof(Index));
         }

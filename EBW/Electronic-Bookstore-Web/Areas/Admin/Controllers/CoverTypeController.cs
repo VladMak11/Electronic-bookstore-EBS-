@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace Electronic_Bookstore_Web.Controllers
+namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CoverTypeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
