@@ -30,29 +30,18 @@ namespace Electronic_Bookstore_Web.Controllers
             var categories = await _unitOfWork.Category.GetAllAsync();
             var covertypes = await _unitOfWork.CoverType.GetAllAsync();
             var authors = await _unitOfWork.Author.GetAllAsync();
-            ProductVM productVM = null;
-            //productVM = new ProductVM(categories, covertypes, authors)
-            //{
-            //    Product = new(),
-            //    //CategoryList = categories.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
-            //    //CoverTypeList = covertypes.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
-            //    //AuthorList = authors.Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() })
-            //};
+            ProductVM productVM = new ProductVM(categories, covertypes, authors)
+            {
+                Product = new(),
+            };
 
             if (id == null || id == 0)
             {
-                //
-                productVM = new ProductVM(categories, covertypes, authors);
                 return View(productVM);
             }
             else
             {
-                var product = await _unitOfWork.Product.GetFirstOrDefaultAsync(x => x.Id == id);
-                productVM = new ProductVM(categories, covertypes, authors)
-                {
-                    Product = product
-                };
-                //productVM.Product = await _unitOfWork.Product.GetFirstOrDefaultAsync(x => x.Id == id);
+                productVM.Product = await _unitOfWork.Product.GetFirstOrDefaultAsync(x => x.Id == id);
                 return View(productVM);
             }
         }
@@ -104,15 +93,16 @@ namespace Electronic_Bookstore_Web.Controllers
                 await _unitOfWork.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            else
+
+            var categories = await _unitOfWork.Category.GetAllAsync();
+            var covertypes = await _unitOfWork.CoverType.GetAllAsync();
+            var authors = await _unitOfWork.Author.GetAllAsync();
+
+            obj = new ProductVM(categories, covertypes, authors)
             {
-                var categories = await _unitOfWork.Category.GetAllAsync();
-                var covertypes = await _unitOfWork.CoverType.GetAllAsync();
-                var authors = await _unitOfWork.Author.GetAllAsync();
-                obj.CategoryList = categories.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
-                obj.CoverTypeList = covertypes.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
-                obj.AuthorList = authors.Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() });
-            }
+                Product = obj.Product,
+            };
+
 
             return View(obj);
         }
