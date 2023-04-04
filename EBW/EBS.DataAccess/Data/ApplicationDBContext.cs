@@ -11,5 +11,10 @@ namespace EBW.DataAccess
         public DbSet<Category> Categories { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Product> Products { get; set; }
+
+        //protected override void OnModelCreating(ModelBuilder modelbulder)
+        //{
+        //    modelbulder.Entity<CoverType>().HasData(new CoverType {Id = 1, Name = "Paper"});
+        //}
     }
 }

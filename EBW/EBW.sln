@@ -5,9 +5,11 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Electronic-Bookstore-Web", "Electronic-Bookstore-Web\Electronic-Bookstore-Web.csproj", "{CE1051AD-D3A3-4724-9A14-CA2A520933F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBW.DataAccess", "EBS.DataAccess\EBW.DataAccess.csproj", "{6A704C6A-24D8-4F52-ABF2-3CBDC460EEB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EBW.DataAccess", "EBS.DataAccess\EBW.DataAccess.csproj", "{6A704C6A-24D8-4F52-ABF2-3CBDC460EEB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBW.Models", "EBW.Models\EBW.Models.csproj", "{5DE5A7B8-423B-4153-BECC-871C40F0C8D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EBW.Models", "EBW.Models\EBW.Models.csproj", "{5DE5A7B8-423B-4153-BECC-871C40F0C8D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBW.Utility", "Utility\EBW.Utility.csproj", "{880A46A9-2F3B-41C2-80F1-6F2B4E2692A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{5DE5A7B8-423B-4153-BECC-871C40F0C8D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DE5A7B8-423B-4153-BECC-871C40F0C8D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DE5A7B8-423B-4153-BECC-871C40F0C8D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{880A46A9-2F3B-41C2-80F1-6F2B4E2692A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{880A46A9-2F3B-41C2-80F1-6F2B4E2692A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{880A46A9-2F3B-41C2-80F1-6F2B4E2692A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{880A46A9-2F3B-41C2-80F1-6F2B4E2692A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

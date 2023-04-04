@@ -12,11 +12,11 @@ namespace EBW.DataAccess.ViewModels
     {
         public Product Product { get; set; }
 
-        [ValidateNever, BindProperty]
+        [ValidateNever]
         public IEnumerable<SelectListItem> CategoryList { get; set; }
-        [ValidateNever, BindProperty]
+        [ValidateNever]
         public IEnumerable<SelectListItem> CoverTypeList { get; set; }
-        [ValidateNever, BindProperty]
+        [ValidateNever]
         public IEnumerable<SelectListItem> AuthorList { get; set; }
         public ProductVM() { }
         public ProductVM(IEnumerable<Category> categories, IEnumerable<CoverType> covertypes, IEnumerable<Author> authors)

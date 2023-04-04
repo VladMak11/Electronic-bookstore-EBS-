@@ -16,7 +16,7 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
-        }
+		}
 
         public async Task<IActionResult> Index()
         {
@@ -24,8 +24,18 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
 
             return View(curentProductList);
         }
+        public async Task<IActionResult> Details(int id)
+        {
+            ShoppingCart cardObj = new()
+            {
+                Product = await _unitOfWork.Product.GetFirstOrDefaultAsync(u => u.Id == id, "Author", "Category", "CoverType")
+            };
 
-        public IActionResult Privacy()
+            return View(cardObj);
+	    }
+
+		
+		public IActionResult Privacy()
         {
             return View();
         }

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Product>
+﻿
+@model IEnumerable<Product>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -9,34 +10,46 @@
 	{
 		<div class="col-lg-3 col-md-6">
 			<div class="row p-2">
-				<div class="col-12 p-1" style="border:1px solid #008cba; border-radius: 5px;">
-					<div class="card">
-						<img src="@product.ImageUrl" class="card-img-top rounded" />
-
-						<div class="card-body">
-							<div class="pl-1">
-								<p class="card-title h5 text-primary">@product.Title</p>
-								<p class="card-title text-info">by <b>@product.Author.FullName</b></p>
-							</div>
-							@if (@product.Price != null)
-							{
-								<div class="pl-1">
-									<p>List Price: <strike style="color:red"><b>$@product.ListPrice.ToString("0.00")</b></strike></p>
-								</div>
-								<div class="pl-1">
-									<p>As low as: <b>$@product.Price.Value.ToString("0.00")</b></p>
-								</div>
-							}
-							else
-							{
-								<div class="pl-1">
-									<p>List Price: <b>$@product.ListPrice.ToString("0.00")</b></p>
-								</div>
-							}
+				<div class="col-12 p-1">
+					<div class="card border-0 p-3 shadow  border-top border-5 rounded">
+						@if(product.ImageUrl != null && product.ImageUrl.Count() > 0)
+						{
+							<img src="@product.ImageUrl" class="card-img-top rounded" width="350px" height="300px"/>
+						}
+						else {
+                            <img src="https://placehold.co/500x600/png" class="card-img-top rounded" />
+                        }
+					</div>
+					<div class="card-body pb-0">
+						<div class="pl-1">
+							<p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@product.Title</p>
+							<p class="card-title text-warning text-center">by <b>@product.Author.FullName</b></p>
 						</div>
+						@if(product.Price != null)
+						{
+							<div class="pl-1">
+								<p class="text-dark text-opacity-75 text-center mb-0">
+									List Price: <span style="color: gray;text-decoration: line-through;text-decoration-color: red;text-decoration-thickness: 2px;"> @product.ListPrice.ToString("c") </span>
+								</p>
+							</div>
+							<div class="pl-1">
+								<p class="text-dark text-opacity-75 text-center mb-0">
+									NEW Price: <span> @product.Price.Value.ToString("c") </span>
+								</p>
+							</div>
+						}
+						else
+						{
+							<div class="pl-1">
+								<p class="text-dark text-opacity-75 text-center mb-4">
+									List Price: <span> @product.ListPrice.ToString("c") </span>
+								</p>
+							</div>
+						}
+
 					</div>
 					<div>
-						<a asp-action="Details" class="btn btn-primary form-control" asp-route-productId="@product.Id">
+						<a asp-controller="Home" asp-action="Details" class="btn btn-primary bg-gradient border-0 form-control" asp-route-id="@product.Id">
 							Details
 						</a>
 					</div>

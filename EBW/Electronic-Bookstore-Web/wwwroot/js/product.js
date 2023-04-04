@@ -10,13 +10,13 @@ function loadDataTable() {
             "url": "/Admin/Product/GetAll"
         },
         "columns": [
-            { "data": "title", "width": "15%" },
-            { "data": "isbn", "width": "15%" },
-            { "data": "listPrice", "width": "15%" },
-            { "data": "price", "width": "15%" },
-            { "data": "category.name" , "width": "15%" },
-            { "data": "coverType.name", "width": "15%" },
-            { "data": "author.fullName", "width": "15%" },
+            { "data": "title", "width": "10%" },
+            { "data": "isbn", "width": "10%" },
+            { "data": "listPrice", "width": "10%" },
+            { "data": "price", "width": "5%" },
+            { "data": "category.name", "width": "10%" },
+            { "data": "coverType.name", "width": "12%" },
+            { "data": "author.fullName", "width": "10%" },
             {
                 "data": "id",
                 "render": function (data) {
@@ -30,10 +30,14 @@ function loadDataTable() {
                 },
                 "width": "5%"
             }
-        ]
+        ],
+        "responsive": true,
     });
 }
 
+$(window).on('resize', function () {
+    dataTable.columns.adjust().draw();
+});
 
 function Delete(url) {
     Swal.fire({
