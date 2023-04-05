@@ -561,9 +561,3 @@ body {
     white-space: nowrap;
     line-height: 50px;
 }
-
-.list-price {
-    color: gray; /* цвет текста */
-    text-decoration: line-through; /* стиль перечеркивания */
-    text-decoration-color: red; /* цвет перечеркивания */
-}

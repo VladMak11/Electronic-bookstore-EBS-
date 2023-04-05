@@ -26,12 +26,9 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
         }
         public async Task<IActionResult> Details(int id)
         {
-            ShoppingCart cardObj = new()
-            {
-                Product = await _unitOfWork.Product.GetFirstOrDefaultAsync(u => u.Id == id, "Author", "Category", "CoverType")
-            };
+            Product productObj = await _unitOfWork.Product.GetFirstOrDefaultAsync(u => u.Id == id, "Author", "Category", "CoverType");
 
-            return View(cardObj);
+            return View(productObj);
 	    }
 
 		
