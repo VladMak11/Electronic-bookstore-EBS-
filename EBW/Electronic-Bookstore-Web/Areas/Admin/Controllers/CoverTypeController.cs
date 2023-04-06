@@ -69,40 +69,29 @@ namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
 
             return View(obj);
         }
-        //GET
-        [HttpGet, ActionName("Delete")]
-        public async Task<IActionResult> DeleteGetAsync(int? id)
+
+        #region API CALLS
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-
-            var covertype = await _unitOfWork.CoverType.GetFirstOrDefaultAsync(u => u.Id == id);
-
-            if (covertype == null)
-            {
-                return NotFound();
-            }
-
-            return View(covertype);
+            var coverTypeList = await _unitOfWork.CoverType.GetAllAsync();
+            return Json(new { data = coverTypeList });
         }
 
-        //POST
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePostAsync(int id)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
         {
-            var covertype = await _unitOfWork.CoverType.GetFirstOrDefaultAsync(u => u.Id == id);
+            var coverType = await _unitOfWork.CoverType.GetFirstOrDefaultAsync(u => u.Id == id);
 
-            if (covertype == null)
+            if (coverType == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Error while deleting" });
             }
+
             await _unitOfWork.CoverType.RemoveAsync(id);
-            TempData["success"] = "Cover Type deleted";
             await _unitOfWork.SaveAsync();
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true, message = "Delete Successful" });
         }
+        #endregion
     }
 }

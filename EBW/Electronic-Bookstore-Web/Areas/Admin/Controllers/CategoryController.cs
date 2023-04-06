@@ -68,42 +68,6 @@ namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
             return View(obj);
         }
 
-        ////GET
-        //[HttpGet, ActionName("Delete")]
-        //public async Task<IActionResult> DeleteGetAsync(int? id)
-        //{
-        //    if (id == null || id == 0)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var category = await _unitOfWork.Category.GetFirstOrDefaultAsync(u => u.Id == id);
-
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(category);
-        //}
-
-        ////POST
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeletePostAsync(int id)
-        //{
-        //    var category = await _unitOfWork.Category.GetFirstOrDefaultAsync(u => u.Id == id);
-
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    await _unitOfWork.Category.RemoveAsync(id);
-        //    TempData["success"] = "Category deleted";
-        //    await _unitOfWork.SaveAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
         #region API CALLS
         [HttpGet]
         public async Task<IActionResult> GetAll()
