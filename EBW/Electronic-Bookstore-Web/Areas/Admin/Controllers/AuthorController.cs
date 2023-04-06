@@ -2,6 +2,7 @@
 using EBW.Models;
 using EBW.Models.Validators;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
 {
@@ -65,40 +66,64 @@ namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
             return View(obj);
         }
 
-        //GET
-        [HttpGet, ActionName("Delete")]
-        public async Task<IActionResult> DeleteGetAsync(int? id)
+        ////GET
+        //[HttpGet, ActionName("Delete")]
+        //public async Task<IActionResult> DeleteGetAsync(int? id)
+        //{
+        //    if (id == null || id == 0)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var author = await _unitOfWork.Author.GetFirstOrDefaultAsync(u => u.Id == id);
+
+        //    if (author == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(author);
+        //}
+
+        ////POST
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeletePostAsync(int id)
+        //{
+        //    var author = await _unitOfWork.Author.GetFirstOrDefaultAsync(u => u.Id == id);
+
+        //    if (author == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    await _unitOfWork.Author.RemoveAsync(id);
+        //    TempData["success"] = "Author deleted";
+        //    await _unitOfWork.SaveAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+        #region API CALLS
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-
-            var author = await _unitOfWork.Author.GetFirstOrDefaultAsync(u => u.Id == id);
-
-            if (author == null)
-            {
-                return NotFound();
-            }
-
-            return View(author);
+            var authortList = await _unitOfWork.Author.GetAllAsync();
+            return Json(new { data = authortList });
         }
 
-        //POST
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePostAsync(int id)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
         {
             var author = await _unitOfWork.Author.GetFirstOrDefaultAsync(u => u.Id == id);
 
             if (author == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Error while deleting" });
             }
+            
             await _unitOfWork.Author.RemoveAsync(id);
-            TempData["success"] = "Author deleted";
             await _unitOfWork.SaveAsync();
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true, message = "Delete Successful" });
         }
+        #endregion
     }
 }
