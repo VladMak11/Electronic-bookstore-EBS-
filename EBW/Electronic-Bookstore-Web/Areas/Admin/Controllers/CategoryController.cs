@@ -68,40 +68,63 @@ namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
             return View(obj);
         }
 
-        //GET
-        [HttpGet, ActionName("Delete")]
-        public async Task<IActionResult> DeleteGetAsync(int? id)
+        ////GET
+        //[HttpGet, ActionName("Delete")]
+        //public async Task<IActionResult> DeleteGetAsync(int? id)
+        //{
+        //    if (id == null || id == 0)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var category = await _unitOfWork.Category.GetFirstOrDefaultAsync(u => u.Id == id);
+
+        //    if (category == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(category);
+        //}
+
+        ////POST
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeletePostAsync(int id)
+        //{
+        //    var category = await _unitOfWork.Category.GetFirstOrDefaultAsync(u => u.Id == id);
+
+        //    if (category == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    await _unitOfWork.Category.RemoveAsync(id);
+        //    TempData["success"] = "Category deleted";
+        //    await _unitOfWork.SaveAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+        #region API CALLS
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-
-            var category = await _unitOfWork.Category.GetFirstOrDefaultAsync(u => u.Id == id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return View(category);
+            var categoryList = await _unitOfWork.Category.GetAllAsync();
+            return Json(new { data = categoryList });
         }
-
-        //POST
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePostAsync(int id)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
         {
             var category = await _unitOfWork.Category.GetFirstOrDefaultAsync(u => u.Id == id);
 
             if (category == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Error while deleting" });
             }
+
             await _unitOfWork.Category.RemoveAsync(id);
-            TempData["success"] = "Category deleted";
             await _unitOfWork.SaveAsync();
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true, message = "Delete Successful" });
         }
+        #endregion
     }
 }
