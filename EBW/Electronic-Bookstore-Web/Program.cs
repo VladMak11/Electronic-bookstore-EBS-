@@ -13,7 +13,8 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlSer
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opts => { opts.Password.RequireNonAlphanumeric = false; })
+                .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 

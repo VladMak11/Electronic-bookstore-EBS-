@@ -2,7 +2,6 @@
 using EBW.Models;
 using EBW.Models.Validators;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 
 namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
 {

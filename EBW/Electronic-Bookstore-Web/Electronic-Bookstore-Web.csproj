@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EBS.DataAccess\EBW.DataAccess.csproj" />
+    <ProjectReference Include="..\Utility\EBW.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>
