@@ -4,7 +4,6 @@ using EBW.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using EBW.DataAccess.ViewModels;
-using EBW.DataAcces;
 
 namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
 {
