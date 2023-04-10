@@ -1,6 +1,7 @@
 
 using EBW.DataAccess;
 using EBW.Models;
+using Electronic_Bookstore_Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opts => { opts.Passw
                 .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+builder.Services.AddScoped<INovaPoshtaService, NovaPoshtaService>();
+//builder.Services.AddSingleton<INovaPoshtaApi>(new NovaPoshtaApi("apiKey"));
 
 var app = builder.Build();
 

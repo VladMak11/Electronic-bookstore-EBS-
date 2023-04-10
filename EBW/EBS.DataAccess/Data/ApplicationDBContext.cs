@@ -1,4 +1,5 @@
 ﻿using EBW.Models;
+using EBW.Models.APIModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +16,15 @@ namespace EBW.DataAccess
         public DbSet<Product> Products { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder modelbulder)
-        //{
-        //    modelbulder.Entity<CoverType>().HasData(new CoverType {Id = 1, Name = "Paper"});
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Warehouse>()
+                 .HasOne(w => w.City)
+                 .WithMany(c => c.Warehouses)
+                 .HasForeignKey(w => w.CityId)
+                 .IsRequired()
+                 .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

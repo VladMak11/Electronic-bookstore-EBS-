@@ -19,7 +19,22 @@
                 <div class="col-10 mx-auto">
                     <div class="border p-3 mt-4 row">
                         <div class="form-floating py-2 md-4 col-12 mb-4">
-                            <input asp-for="Email" class="form-control border-0 shadow" autocomplete="username" aria-required="true" />
+                            <input asp-for="FirstName" class="form-control border-0 shadow" aria-required="true" />
+                            <label asp-for="FirstName" class="ms-2">First Name *</label>
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 md-4 col-12 mb-4">
+                            <input asp-for="LastName" class="form-control border-0 shadow" aria-required="true" />
+                            <label asp-for="LastName" class="ms-2">Last Name *</label>
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 md-4 col-12 mb-4">
+                            <input type="tel" id="PhoneNumber" asp-for="PhoneNumber" class="form-control border-0 shadow" title="+380" />
+                            <label asp-for="PhoneNumber" class="ms-2">Phone Number *</label>
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 md-4 col-12 mb-4">
+                            <input type="email" asp-for="Email" class="form-control border-0 shadow" autocomplete="username" aria-required="true" />
                             <label asp-for="Email" class="ms-2">Email *</label>
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
