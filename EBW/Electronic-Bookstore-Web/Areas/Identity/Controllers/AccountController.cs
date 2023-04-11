@@ -6,6 +6,9 @@ using Utility;
 using NovaPoshtaApi;
 using EBW.Models.Validators;
 using FluentValidation;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using EBW.DataAccess;
 
 namespace Electronic_Bookstore_Web.Areas.Identity.Controllers
 {
@@ -16,14 +19,16 @@ namespace Electronic_Bookstore_Web.Areas.Identity.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _config;
+        private readonly IUnitOfWork _unitOfWork;
         public AccountController(UserManager<ApplicationUser> userManager,
                                 SignInManager<ApplicationUser> signInManager,
-                                RoleManager<IdentityRole> roleManager, IConfiguration config)
+                                RoleManager<IdentityRole> roleManager, IConfiguration config, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _config = config;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
@@ -90,7 +95,7 @@ namespace Electronic_Bookstore_Web.Areas.Identity.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login() => View(new InputModelforLogin());
+        public async Task<IActionResult> Login() => View(new InputModelforLogin());
 
         [HttpPost]
         public async Task<IActionResult> Login(InputModelforLogin logimIM)
@@ -132,6 +137,41 @@ namespace Electronic_Bookstore_Web.Areas.Identity.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(Index), "Home", new { area = "Customer" });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var dataUser = await _userManager.FindByIdAsync(userId);
+            var profile = new InputProfile(dataUser.Email,dataUser.LastName,dataUser.FirstName,dataUser.PhoneNumber, dataUser.City, dataUser.BranchOffice);
+            return View(profile);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Profile(InputProfile profileData)
+        {
+            var localvalidator = new InputProfileValidator();
+            var resultValidate = localvalidator.Validate(profileData);
+            foreach (var error in resultValidate.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(profileData.Email);
+                user.LastName = profileData.LastName;
+                user.FirstName = profileData.FirstName;
+                user.PhoneNumber = profileData.PhoneNumber;
+                user.City = profileData.City;
+                user.BranchOffice = profileData.BranchOffice;
+                await _userManager.UpdateAsync(user);
+                return RedirectToAction(nameof(Index), "Home", new { area = "Customer" });
+            }
+
+            return View(profileData);
         }
     }
 }
