@@ -16,6 +16,7 @@ namespace EBW.DataAccess
         public IRepository<Category> Category { get; private set; }
         public IRepository<Author> Author { get; private set; }
         public IRepository<Product> Product { get; private set; }
+        public IRepository<ShoppingCart> ShoppingCart { get; private set; }
 
         public UnitOfWork(ApplicationDBContext db)
         {
@@ -24,6 +25,7 @@ namespace EBW.DataAccess
             Category = new Repository<Category>(_db);
             Author = new Repository<Author>(_db);
             Product = new Repository<Product>(_db);
+            ShoppingCart = new Repository<ShoppingCart>(_db);
         }
 
         public async Task SaveAsync()

@@ -14,17 +14,18 @@ namespace EBW.DataAccess
         public DbSet<Category> Categories { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Warehouse>()
-                 .HasOne(w => w.City)
-                 .WithMany(c => c.Warehouses)
-                 .HasForeignKey(w => w.CityId)
-                 .IsRequired()
-                 .OnDelete(DeleteBehavior.Cascade);
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+        //    modelBuilder.Entity<Warehouse>()
+        //         .HasOne(w => w.City)
+        //         .WithMany(c => c.Warehouses)
+        //         .HasForeignKey(w => w.CityId)
+        //         .IsRequired()
+        //         .OnDelete(DeleteBehavior.Cascade);
+        //}
     }
 }
