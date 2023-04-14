@@ -110,7 +110,7 @@ namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var productList = await _unitOfWork.Product.GetAllAsync("Author", "Category", "CoverType");
+            var productList = await _unitOfWork.Product.GetAllAsync(includeProp: new string[] { "Author", "Category", "CoverType" });
             return Json(new { data = productList });
         }
 

@@ -23,7 +23,7 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Product> curentProductList = await _unitOfWork.Product.GetAllAsync("Author", "Category", "CoverType");
+            IEnumerable<Product> curentProductList = await _unitOfWork.Product.GetAllAsync(null,"Author", "Category", "CoverType");
 
             return View(curentProductList);
         }

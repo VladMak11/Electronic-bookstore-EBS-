@@ -1,0 +1,112 @@
+﻿@model ShoppingCartVM
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+
+<form method="post">
+    <div class="card shadow border-0 my-4 col-12">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-5 text-start">
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-light mb-0">
+                        <small>Continue Shopping&nbsp;<i class="bi bi-shop-window"></i></small>
+                    </a>
+                </div>
+                <div class="col-7">
+                    <h1 class="text-white py-1">Shopping Cart</h1>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    @foreach (var item in Model.ShoppingCartList)
+                    {
+                        <div class="row border-bottom pb-3">
+                            <div class="d-none d-lg-block col-2 text-center py-2">
+                                @if (item.Product.ImageUrl != null && item.Product.ImageUrl.Count() > 0)
+                                {
+                                    <img src="@item.Product.ImageUrl" class="card-img-top rounded w-150" />
+                                }
+                            </div>
+                            <div class="col-12 col-lg-3 pt-md-3">
+                                <a asp-controller="Home" asp-action="Details" class=" card-link" asp-route-id="@item.Product.Id">
+                                    @item.Product.Title
+                                </a>
+                            </div>
+                            <div class="col-12 col-lg-7 text-center row pt-md-3">
+                                <div class="col-4 text-md-right">
+                                    @if (@item.Product.Price != null)
+                                    {
+                                        <div class="pl-1">
+                                            <p class="text-dark text-opacity-75 text-center mb-0">
+                                                 SALE Price: <span> @item.Product.Price.Value.ToString("c") </span>
+                                            </p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="pl-1">
+                                            <p class="text-dark text-opacity-75 text-center mb-4">
+                                                Price: <span>@item.Product.ListPrice.ToString("c") </span>
+                                            </p>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5 pt-2">
+                                    <div class="w-75 btn-group" role="group">
+                                        <a asp-area="Customer" asp-controller="Cart" asp-action="Plus" asp-route-cardObjId="@item.Id">
+                                            <i class="bi bi-patch-plus-fill"></i>
+                                        </a> &nbsp;&nbsp;
+                                        <div class="col-3 text-md-right pt-2 pt-md-4">
+                                            <h6 class="fw-semibold">
+                                                <span>@item.Count</span>
+                                            </h6>
+                                        </div>
+                                        &nbsp;&nbsp;
+                                        @if (@item.Count == 1)
+                                        {
+                                            <a asp-area="Customer" asp-controller="Cart" asp-action="Minus" asp-route-cardObjId="@item.Id" class="disabled" style="color:gray" onclick="return false;">
+                                                <i class="bi bi-patch-minus-fill"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-area="Customer" asp-controller="Cart" asp-action="Minus" asp-route-cardObjId="@item.Id">
+                                                <i class="bi bi-patch-minus-fill"></i>
+                                            </a>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-3 col-sm-4 col-lg-2 offset-lg-1 text-right pt-2">
+                                    <a asp-area="Customer" asp-controller="Cart" asp-action="Delete" asp-route-cardObjId="@item.Id" class="badge bg-danger">
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-white border-0">
+            <div class="row">
+                <div class="col-md-4 offset-md-4">
+                    <ul class="list-group mb-4">
+                        <li class="d-flex justify-content-between align-items-center">
+                            <h4 class="text-dark fw-semibold text-uppercase"> Total (UAH)</h4>
+                            <h4 class="text-dark fw-bolder">@Model.TotalPrice.ToString("c")</h4>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-5">
+                    <a asp-action="Summary" class="btn btn-primary border-0 bg-gradient w-100 py-2">Summary</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

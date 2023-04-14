@@ -30,9 +30,13 @@ namespace EBW.DataAccess
         /// </summary>
         /// <param name="includeProp"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<T>> GetAllAsync(params string[] includeProp)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? paramFilter = null, params string[] includeProp)
         {
             IQueryable<T> curentQuery = _dbSet; 
+            if (paramFilter != null)
+            {
+                curentQuery = curentQuery.Where(paramFilter);
+            }
             if(includeProp != null)
             {
                 foreach(var itemProp in includeProp)
