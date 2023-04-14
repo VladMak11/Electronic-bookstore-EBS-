@@ -2,10 +2,13 @@
 using EBW.Models;
 using EBW.Models.Validators;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Utility;
 
 namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = Role.Role_Admin)]
     public class AuthorController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -1,13 +1,16 @@
 ﻿
 using EBW.DataAccess;
 using EBW.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using Utility;
 
 namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = Role.Role_Admin)]
     public class CoverTypeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

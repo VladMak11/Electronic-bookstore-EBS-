@@ -41,7 +41,7 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
 	    }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Details(ShoppingCart shoppingCartObj)
         {
             shoppingCartObj.Id = default;

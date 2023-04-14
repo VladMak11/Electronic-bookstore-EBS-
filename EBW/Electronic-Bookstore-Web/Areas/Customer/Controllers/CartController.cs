@@ -1,11 +1,13 @@
 ﻿using EBW.DataAccess;
 using EBW.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
 {
-    [Area("Customer")] //Authorize
+    [Area("Customer")]
+    [Authorize]
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -31,7 +33,7 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
             return View(ShoppingCartVM);
         }
 
-        //[ActionName("Plus")]
+        [ActionName("Plus")]
         public async Task<IActionResult> Plus(int cardObjId)
         {
             var cardFromDB = await _unitOfWork.ShoppingCart.GetFirstOrDefaultAsync(x => x.Id == cardObjId);

@@ -4,10 +4,13 @@ using EBW.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using EBW.DataAccess.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Utility;
 
 namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = Role.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

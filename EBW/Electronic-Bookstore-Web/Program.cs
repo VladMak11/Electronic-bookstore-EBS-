@@ -17,9 +17,13 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlSer
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opts => { opts.Password.RequireNonAlphanumeric = false; })
                 .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
 
+builder.Services.ConfigureApplicationCookie(options => {
+    options.LoginPath = $"/Identity/Account/Login";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
+
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<INovaPoshtaService, NovaPoshtaService>();
-//builder.Services.AddSingleton<INovaPoshtaApi>(new NovaPoshtaApi("apiKey"));
 
 var app = builder.Build();
 
