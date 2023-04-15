@@ -51,10 +51,17 @@
                                 <span asp-validation-for="OrderUserInfo.City" class="text-danger"></span>
                             </div>
                             <div class="form-floating py-2 md-4 col-6">
+                                <select asp-for="@Model.OrderUserInfo.Carrier" asp-items="@Model.PoshtaList" class="form-select border-0 shadow">
+                                    <option disabled selected>--Select Carrier--</option>
+                                </select>
+                                <label asp-for="OrderUserInfo.Carrier" class="ms-2"></label>
+                            </div>
+                            <div class="form-floating py-2 md-4 col-6">
                                 <input asp-for="OrderUserInfo.BranchOffice" class="form-control border-0 shadow" />
                                 <label asp-for="OrderUserInfo.BranchOffice" class="ms-2">Branch Office</label>
                                 <span asp-validation-for="OrderUserInfo.BranchOffice" class="text-danger"></span>
                             </div>
+                            
                         </div>
                         <div class="border p-3 mt-4 row ">
                             <h5>
@@ -86,6 +93,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+               <div class="col-12 d-flex justify-content-center">
+                    <button type="submit" value="Place Order" class="btn btn-primary">The order is confirmed</button>
+			    </div>
             </div>
         </div>
     </div>
