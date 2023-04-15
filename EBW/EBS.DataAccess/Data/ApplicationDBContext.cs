@@ -16,6 +16,8 @@ namespace EBW.DataAccess
         public DbSet<Product> Products { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<OrderUserInfo> OrderUserInfos { get; set; }
+        public DbSet<OrderDetailsProduct> OrderDetailsProducts { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{

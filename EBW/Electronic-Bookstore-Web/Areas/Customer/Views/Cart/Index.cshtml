@@ -99,14 +99,14 @@
                         <ul class="list-group mb-4">
                             <li class="d-flex justify-content-between align-items-center">
                                 <h4 class="text-dark fw-semibold text-uppercase"> Total (UAH)</h4>
-                                <h4 class="text-dark fw-bolder">@Model.TotalPrice.ToString("c")</h4>
+                                <h4 class="text-dark fw-bolder">@Model.OrderUserInfo.TotalOrderPrice.ToString("c")</h4>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2 offset-md-5">
-                        <a asp-action="Summary" class="btn btn-primary border-0 bg-gradient w-100 py-2">Summary</a>
+                    <div class="col-md-3 offset-md-5 d-flex justify-content-center">
+                        <a asp-action="Summary" class="btn btn-primary border-0 bg-gradient w-100 py-2">Order summary and payment</a>
                     </div>
                 </div>
             </div>

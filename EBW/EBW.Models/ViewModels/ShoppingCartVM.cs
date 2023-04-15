@@ -9,6 +9,6 @@ namespace EBW.Models
     public class ShoppingCartVM
     {
         public IEnumerable<ShoppingCart> ShoppingCartList { get; set; }
-        public decimal TotalPrice { get; set; }
+        public OrderUserInfo OrderUserInfo { get; set; }
     }
 }

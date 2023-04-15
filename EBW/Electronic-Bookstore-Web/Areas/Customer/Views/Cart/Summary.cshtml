@@ -1,0 +1,92 @@
+﻿@model ShoppingCartVM
+@{
+    ViewData["Title"] = "Summary";
+}
+
+<form method="post">
+    <div class="card shadow border-0 my-4 col-12">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-5 text-start">
+                    <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="btn btn-light mb-0">
+                        <small>Back to Cart&nbsp;<i class="bi bi-basket3-fill"></i></small>
+                    </a>
+                </div>
+                <div class="col-7">
+                    <h1 class="text-white py-1">Order Summary</h1>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="container rounded p-2">
+                <div class="row">
+                    <div class="col-12 pb-4">
+                        <div class="border p-3 mt-4 row">
+                            <h5>
+                                <span class="text-info">Your contact details :</span>
+                            </h5>
+                            <div class="form-floating py-2 md-4 col-6">
+                                <input asp-for="OrderUserInfo.FirstName" class="form-control border-0 shadow" />
+                                <label asp-for="OrderUserInfo.FirstName" class="ms-2">First Name</label>
+                                <span asp-validation-for="OrderUserInfo.FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating py-2 md-4 col-6">
+                                <input asp-for="OrderUserInfo.LastName" class="form-control border-0 shadow" />
+                                <label asp-for="OrderUserInfo.LastName" class="ms-2">Last Name</label>
+                                <span asp-validation-for="OrderUserInfo.LastName" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating py-2 md-4 col-6">
+                                <input asp-for="OrderUserInfo.PhoneNumber" class="form-control border-0 shadow" />
+                                <label asp-for="OrderUserInfo.PhoneNumber" class="ms-2">Phone Number</label>
+                                <span asp-validation-for="OrderUserInfo.PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="border p-3 mt-4 row">
+                            <h5>
+                                <span class="text-info">Delivery :</span>
+                            </h5>
+                            <div class="form-floating py-2 md-4 col-6">
+                                <input asp-for="OrderUserInfo.City" class="form-control border-0 shadow" />
+                                <label asp-for="OrderUserInfo.City" class="ms-2"></label>
+                                <span asp-validation-for="OrderUserInfo.City" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating py-2 md-4 col-6">
+                                <input asp-for="OrderUserInfo.BranchOffice" class="form-control border-0 shadow" />
+                                <label asp-for="OrderUserInfo.BranchOffice" class="ms-2">Branch Office</label>
+                                <span asp-validation-for="OrderUserInfo.BranchOffice" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="border p-3 mt-4 row ">
+                            <h5>
+                                <span class="text-info">Order :</span>
+                            </h5>
+                            <ul class="list-group mb-3 col-6 mx-auto">
+                                @foreach (var details in Model.ShoppingCartList)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="my-0">@details.Product.Title</h6>
+                                            <small class="text-muted">Quantity: @details.Count</small>
+                                        </div>
+                                        @if (details.Product.Price != null)
+                                        {
+                                            <span class="text-muted">@((details.Product.Price * details.Count).Value.ToString("c")) </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">@((details.Product.ListPrice * details.Count).ToString("c")) </span>
+                                        }
+                                    </li>
+                                }
+                                <li class="list-group-item d-flex justify-content-between bg-light">
+                                    <small class="text-info">Total (UAH)</small>
+                                    <strong class="text-info">@Model.OrderUserInfo.TotalOrderPrice.ToString("c")</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

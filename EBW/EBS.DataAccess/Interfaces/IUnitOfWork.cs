@@ -14,6 +14,8 @@ namespace EBW.DataAccess
         IRepository<Author> Author { get; }
         IRepository<Product> Product { get; }
         IRepository<ShoppingCart> ShoppingCart { get; }
+        IRepository<OrderDetailsProduct> OrderDetailsProduct { get; }
+        IRepository<OrderUserInfo> OrderUserInfo { get; }
         Task SaveAsync();
     }
 }
