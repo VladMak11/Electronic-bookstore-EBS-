@@ -68,15 +68,17 @@ namespace EBW.DataAccess
             entityEntry.State = EntityState.Deleted;
         }
 
+        public async Task RemoveRangeAsync(IEnumerable<T> item)
+        {
+            _dbSet.RemoveRange(item);
+            await _db.SaveChangesAsync();
+
+        }
+
         public async Task UpdateAsync(T item)
         {
             EntityEntry entityEntry = _db.Entry<T>(item);
             entityEntry.State= EntityState.Modified;
         }
-
-        //public void RemoveRange(IEnumerable<T> item)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }

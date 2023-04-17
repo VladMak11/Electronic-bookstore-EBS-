@@ -15,7 +15,6 @@ namespace EBW.DataAccess
         Task AddAsync(T item);
         Task RemoveAsync(int id);
         Task UpdateAsync(T item);
-
-        //void RemoveRange(IEnumerable<T> item);
+        Task RemoveRangeAsync(IEnumerable<T> item);
     }
 }
