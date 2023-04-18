@@ -2,6 +2,7 @@
 using EBW.DataAccess;
 using EBW.Models;
 using Electronic_Bookstore_Web;
+using Electronic_Bookstore_Web.PayPalApi;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,7 @@ builder.Services.ConfigureApplicationCookie(options => {
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<INovaPoshtaService, NovaPoshtaService>();
+builder.Services.AddScoped<IPayPalService, PayPalService>();
 
 var app = builder.Build();
 

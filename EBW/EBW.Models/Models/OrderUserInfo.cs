@@ -26,6 +26,11 @@ namespace EBW.Models
         public decimal TotalOrderPrice { get; set; }
         public DateTime ShippingDate { get; set; }
         public string? OrderStatus { get; set; }
+        //
+        public string? PaymentStatus { get; set; }
+        public string? SessionId { get; set; }
+        public string? PaymentIntendId { get; set; }
+        //
         public string? TrackingNumber { get; set; }
         public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]
