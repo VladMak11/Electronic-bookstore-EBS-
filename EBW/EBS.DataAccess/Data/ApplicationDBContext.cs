@@ -1,5 +1,4 @@
 ﻿using EBW.Models;
-using EBW.Models.APIModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

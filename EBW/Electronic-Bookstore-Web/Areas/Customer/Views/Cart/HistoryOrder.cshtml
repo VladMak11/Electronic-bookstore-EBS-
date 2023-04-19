@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OrderDetailsProduct>
+﻿@model HistoryVM
 
 @{
     ViewData["Title"] = "History Orders";
@@ -15,34 +15,66 @@
     <div class="card-body">
         <div class="container rounded p-2">
             <div class="row">
-				<div class="col-12 col-lg-5 offset-lg-1">
-					<h4 class="d-flex justify-content-between align-items-center mb-3">
-						<span class="text-info">Order Summary:</span>
-					</h4>
-					<ul class="list-group mb-3">
-                        @foreach (var details in Model)
-                        {
-                            <li class="list-group-item d-flex justify-content-between">
-                                <div>
-                                    <h6 class="my-0">@details.Product.Title</h6>
-                                    <small class="text-muted">Quantity: @details.Count</small>
-                                </div>
-                                @if (details.Product.Price != null)
-                                {
-                                    <span class="text-muted">@((details.Product.Price * details.Count).Value.ToString("c")) </span>
-                                }
-                                else
-                                {
-                                    <span class="text-muted">@((details.Product.ListPrice * details.Count).ToString("c")) </span>
-                                }
+                <div class="col-12 col-lg-5 offset-lg-1 mx-auto">
+                    @foreach (var lists in @Model.OrderUserInfoList)
+                    {
+                        <br />
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge bg-info">@lists.OrderDate.ToString("g")</span>
+                        </h4>
+                        <ul class="list-group mb-3">
+                            @foreach (var lists2 in @Model.OrderDetailsProductList.Where(x => x.OrderUserInfo.OrderDate == @lists.OrderDate))
+                            {
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="my-0">@lists2.Product.Title</h6>
+                                        <small class="text-muted">Quantity: @lists2.Count</small>
+                                    </div>
+                                    @if (lists2.Product.Price != null)
+                                    {
+                                        <span class="text-muted">@((lists2.Product.Price * lists2.Count).Value.ToString("c")) </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">@((lists2.Product.ListPrice * lists2.Count).ToString("c")) </span>
+                                    }
+                                </li>
+                            }
+                            <li class="list-group-item d-flex justify-content-between bg-light">
+                                <small class="text-info">Total (валюта)</small>
+                                <strong class="text-info">@Model.OrderUserInfoList.FirstOrDefault(x=>x.OrderDate == @lists.OrderDate).TotalOrderPrice.ToString("c")</strong>
                             </li>
-                        }
-						<li class="list-group-item d-flex justify-content-between bg-light">
-							<small class="text-info">Total (UAH)</small>
-                            <strong class="text-info">@Model.First().OrderUserInfo.TotalOrderPrice.ToString("c")</strong>
-						</li>
-					</ul>
-				</div>
+                        </ul>
+                    }
+
+                    @*<ul class="list-group mb-3">
+                    @foreach (var details in Model)
+                    {
+                    @foreach (var order in details.OrderUserInfo.)
+                    {
+
+                    }
+                    <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                    <h6 class="my-0">@details.Product.Title</h6>
+                    <small class="text-muted">Quantity: @details.Count</small>
+                    </div>
+                    @if (details.Product.Price != null)
+                    {
+                    <span class="text-muted">@((details.Product.Price * details.Count).Value.ToString("c")) </span>
+                    }
+                    else
+                    {
+                    <span class="text-muted">@((details.Product.ListPrice * details.Count).ToString("c")) </span>
+                    }
+                    </li>
+                    }
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                    <small class="text-info">Total (UAH)</small>
+                    <strong class="text-info">@Model.First().OrderUserInfo.TotalOrderPrice.ToString("c")</strong>
+                    </li>
+                    </ul>*@
+                </div>
             </div>
         </div>
     </div>

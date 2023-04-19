@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using System.Web.Helpers;
 
 namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
 {
@@ -19,9 +20,6 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
         private IHttpContextAccessor _contextAccessor;
         private readonly IConfiguration _config;
         private readonly IPayPalService _payPalService;
-
-        [BindProperty]
-        public ShoppingCartVM ShoppingCartVM { get; set; }
         public CartController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IHttpContextAccessor contextAccessor, IConfiguration config, IPayPalService payPalService)
         {
             _unitOfWork = unitOfWork;
@@ -34,7 +32,7 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            ShoppingCartVM = new()
+            ShoppingCartVM ShoppingCartVM = new()
             {
                 ShoppingCartList = await _unitOfWork.ShoppingCart.GetAllAsync(x => x.ApplicationUserId == userId,"Product"),
                 OrderUserInfo = new()
@@ -82,29 +80,38 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            ShoppingCartVM = new()
+           
+            if(TempData.ContainsKey("CurrentInfoOrder"))
             {
-                ShoppingCartList = await _unitOfWork.ShoppingCart.GetAllAsync(x => x.ApplicationUserId == userId, "Product"),
-                OrderUserInfo = new(),
-            };
-            
-            ShoppingCartVM.OrderUserInfo.ApplicationUser = await _userManager.GetUserAsync(User);
-            ShoppingCartVM.OrderUserInfo.FirstName = ShoppingCartVM.OrderUserInfo.ApplicationUser.FirstName;
-            ShoppingCartVM.OrderUserInfo.LastName = ShoppingCartVM.OrderUserInfo.ApplicationUser.LastName;
-            ShoppingCartVM.OrderUserInfo.City = ShoppingCartVM.OrderUserInfo.ApplicationUser.City;
-            ShoppingCartVM.OrderUserInfo.BranchOffice = ShoppingCartVM.OrderUserInfo.ApplicationUser.BranchOffice;
-            ShoppingCartVM.OrderUserInfo.PhoneNumber = ShoppingCartVM.OrderUserInfo.ApplicationUser.PhoneNumber;
+                var Jsoncart = JsonConvert.DeserializeObject<ShoppingCartVM>(TempData["CurrentInfoOrder"].ToString());
+                return View(Jsoncart);
+            }
+            else
+            {
+                ShoppingCartVM ShoppingCartVM = new()
+                {
+                    ShoppingCartList = await _unitOfWork.ShoppingCart.GetAllAsync(x => x.ApplicationUserId == userId, "Product"),
+                    OrderUserInfo = new(),
+                };
 
-            ShoppingCartVM.OrderUserInfo.TotalOrderPrice = ShoppingCartVM.ShoppingCartList.Select(x => (
-            x.Product.Price == null ? x.Product.ListPrice : (decimal)x.Product.Price) * x.Count)
-            .Sum();
+                ShoppingCartVM.OrderUserInfo.ApplicationUser = await _userManager.GetUserAsync(User);
+                ShoppingCartVM.OrderUserInfo.FirstName = ShoppingCartVM.OrderUserInfo.ApplicationUser.FirstName;
+                ShoppingCartVM.OrderUserInfo.LastName = ShoppingCartVM.OrderUserInfo.ApplicationUser.LastName;
+                ShoppingCartVM.OrderUserInfo.City = ShoppingCartVM.OrderUserInfo.ApplicationUser.City;
+                ShoppingCartVM.OrderUserInfo.BranchOffice = ShoppingCartVM.OrderUserInfo.ApplicationUser.BranchOffice;
+                ShoppingCartVM.OrderUserInfo.PhoneNumber = ShoppingCartVM.OrderUserInfo.ApplicationUser.PhoneNumber;
 
-            return View(ShoppingCartVM);
+                ShoppingCartVM.OrderUserInfo.TotalOrderPrice = ShoppingCartVM.ShoppingCartList.Select(x => (
+                x.Product.Price == null ? x.Product.ListPrice : (decimal)x.Product.Price) * x.Count)
+                .Sum();
+
+                return View(ShoppingCartVM);
+            }
         }
 
         [HttpPost]
         [ActionName("Summary")]
-        public async Task<IActionResult> SummaryPostAsync()
+        public async Task<IActionResult> SummaryPostAsync(ShoppingCartVM ShoppingCartVM)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -144,7 +151,7 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
             var serializedObj = JsonConvert.SerializeObject(ShoppingCartVM);
             TempData["CurrentInfoOrder"] = serializedObj;
 
-             return Redirect(paypalurl);
+            return Redirect(paypalurl);
             //return RedirectToAction("OrderSuccesfull", new {id = ShoppingCartVM.OrderUserInfo.Id});
         }
         public async Task<IActionResult> Success()
@@ -155,25 +162,41 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
             if (paymentResult.state.ToLower() != "approved")
             {
                 cart.OrderUserInfo.OrderStatus = OrderStatus.StatusInProcess;
+                var serializedObj = JsonConvert.SerializeObject(cart);
+                TempData["CurrentInfoOrder"] = serializedObj;
                 return RedirectToAction("Summary");
             }
             else
             {
                 cart.OrderUserInfo.OrderStatus = OrderStatus.StatusApproved;
                 await ClearShoppingCartAsync(cart.OrderUserInfo.ApplicationUserId);
-                return View("Success");
+                return View("OrderSuccesfull");
             }
         }
-        [HttpGet]
-        [ActionName("OrderSuccesfull")]
-        public async Task<IActionResult> OrderCreatedSuccesfullAsync(int id)
+        public async Task<IActionResult> Cancel()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //var cart = JsonConvert.DeserializeObject<ShoppingCartVM>(TempData["CurrentInfoOrder"].ToString());
 
-            await ClearShoppingCartAsync(userId);
-            return View(id);
+            //var paymentResult = await _payPalService.ExecutePaymentAsync(HttpContext);
+            //if (paymentResult.state.ToLower() != "approved")
+            //{
+            //    cart.OrderUserInfo.OrderStatus = OrderStatus.StatusInProcess;
+            //    var serializedObj = JsonConvert.SerializeObject(cart);
+            //    TempData["CurrentInfoOrder"] = serializedObj;
+            //}
+            return View("Summary");
         }
+
+        //[HttpGet]
+        //[ActionName("OrderSuccesfull")]
+        //public async Task<IActionResult> OrderCreatedSuccesfullAsync(int id)
+        //{
+        //    var claimsIdentity = (ClaimsIdentity)User.Identity;
+        //    var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        //    await ClearShoppingCartAsync(userId);
+        //    return View(id);
+        //}
 
         public async Task ClearShoppingCartAsync(string userId)
         {
@@ -181,15 +204,26 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
             await _unitOfWork.ShoppingCart.RemoveRangeAsync(items);
             await _unitOfWork.SaveAsync();
         }
+
         [HttpGet]
         [ActionName("HistoryOrder")]
         public async Task<IActionResult> HistoryOrderforUserAsync()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var orders = await _unitOfWork.OrderDetailsProduct.GetAllAsync(includeProp: new string[] { "OrderUserInfo", "Product"});
-            orders = orders.Where(x => x.OrderUserInfo.ApplicationUserId == userId).ToList();
-            return View(orders);
+
+            HistoryVM HistoryVM = new()
+            {
+                OrderUserInfoList = await _unitOfWork.OrderUserInfo.GetAllAsync(x=>x.ApplicationUserId == userId),
+                OrderDetailsProductList = await _unitOfWork.OrderDetailsProduct.GetAllAsync(includeProp: new string[] { "OrderUserInfo", "Product" })
+            };
+
+            //var orders = await _unitOfWork.OrderDetailsProduct.GetAllAsync(includeProp: new string[] { "OrderUserInfo", "OrderDetailsProduct", "Product" });
+            
+            //orders = orders.Where(x => x.OrderUserInfo.ApplicationUserId == userId).ToList();
+
+
+            return View(HistoryVM);
         }
     }
 }

@@ -30,7 +30,7 @@ builder.Services.ConfigureApplicationCookie(options => {
 });
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-builder.Services.AddScoped<INovaPoshtaService, NovaPoshtaService>();
+//builder.Services.AddScoped<INovaPoshtaService, NovaPoshtaService>();
 builder.Services.AddScoped<IPayPalService, PayPalService>();
 
 var app = builder.Build();
