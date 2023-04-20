@@ -17,7 +17,8 @@ namespace EBW.Models
         public string FirstName { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
-        public string? Carrier { get; set; }
+        [Required]
+        public string Carrier { get; set; }
         [Required]
         public string City { get; set; }
         [Required]
@@ -25,18 +26,14 @@ namespace EBW.Models
         public DateTime OrderDate { get; set; }
         public decimal TotalOrderPrice { get; set; }
         public DateTime ShippingDate { get; set; }
-        public string? OrderStatus { get; set; }
         //
+        public string? OrderStatus { get; set; }
         public string? PaymentStatus { get; set; }
-        public string? SessionId { get; set; }
-        public string? PaymentIntendId { get; set; }
         //
         public string? TrackingNumber { get; set; }
         public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
-
-
     }
 }

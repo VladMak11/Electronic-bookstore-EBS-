@@ -39,15 +39,23 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">Product&nbsp;<i class="bi bi-boxes"></i></a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Orders&nbsp;</a>
+                            </li>
                         }
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">Shopping Cart&nbsp;<i class="bi bi-basket3-fill"></i></a>
+                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">Shopping Cart&nbsp;<i class="bi bi-basket3-fill"></i>
+                               @* @await Component.InvokeAsync("ShoppingCart");*@
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="HistoryOrder">HistoryOrder </></a>
-                        </li>
+                        @if (User.IsInRole(Role.Role_Customer))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="HistoryOrder">HistoryOrder&nbsp;<i class="bi bi-compass-fill"></i></a>
+                             </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="PayPal" asp-action="Payment">Pay </></a>
                         </li>

@@ -53,14 +53,6 @@ namespace Electronic_Bookstore_Web.PayPalApi
 
             var executedPayment =  payment.Execute(apiContext, paymentExecution);
              return executedPayment;
-
-            //if (executedPayment.state.ToLower() != "approved")
-            //{
-            //    return RedirectToAction("Cancel");
-            //}
-
-            //// Payment was successful, so do something here, like update your database or show a success page
-            //return RedirectToAction("Index");
         }
         private async Task<Payment> CreatePaymentAsync(APIContext apiContext, string guid, HttpContext http)
         {

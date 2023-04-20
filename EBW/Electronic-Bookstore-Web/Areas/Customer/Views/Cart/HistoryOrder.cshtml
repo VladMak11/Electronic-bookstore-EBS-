@@ -21,6 +21,7 @@
                         <br />
                         <h4 class="d-flex justify-content-between align-items-center mb-3">
                             <span class="badge bg-info">@lists.OrderDate.ToString("g")</span>
+                            <span class="badge bg-danger">@lists.OrderStatus</span>
                         </h4>
                         <ul class="list-group mb-3">
                             @foreach (var lists2 in @Model.OrderDetailsProductList.Where(x => x.OrderUserInfo.OrderDate == @lists.OrderDate))
@@ -45,7 +46,7 @@
                                 <strong class="text-info">@Model.OrderUserInfoList.FirstOrDefault(x=>x.OrderDate == @lists.OrderDate).TotalOrderPrice.ToString("c")</strong>
                             </li>
                         </ul>
-                    }
+                    } 
 
                     @*<ul class="list-group mb-3">
                     @foreach (var details in Model)

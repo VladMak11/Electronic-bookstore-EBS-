@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+@{
+    var currentStaus = Context.Request.Query["status"];
+    var orderpending = "text-primary";
+    var paymentpending = "text-primary";
+    var orderapproved = "text-primary";
+    var paymentapproved = "text-primary";
+    var orderprocessing = "text-primary";
+    var paymentrejected = "text-primary";
+    var ordershipped = "text-primary";
+    var all = "text-primary";
+
+    switch (currentStaus)
+    {
+        case "orderpending":
+            orderpending = "active text-white bg-primary bg-gradient";
+            break;
+        case "paymentpending":
+            paymentpending = "active text-white bg-primary bg-gradient";
+            break;
+        case "orderapproved":
+            orderapproved = "active text-white bg-primary bg-gradient";
+            break;
+        case "paymentapproved":
+            paymentapproved = "active text-white bg-primary bg-gradient";
+            break;
+        case "orderprocessing":
+            orderprocessing = "active text-white bg-primary bg-gradient";
+            break;
+        case "paymentrejected":
+            paymentrejected = "active text-white bg-primary bg-gradient";
+            break;
+        case "ordershipped":
+            ordershipped = "active text-white bg-primary bg-gradient";
+            break;
+        default:
+            all = "active text-white bg-primary bg-gradient";
+            break;
+    }
+}
+<partial name="_Notification" />
+
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Order List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <div class="d-flex justify-content-center  mb-4 pt-2">
+            <ul class="list-group list-group-horizontal-sm">
+                <a style="text-decoration:none;" asp-controller="Order"
+                   asp-action="Index" asp-route-status="orderpending">
+                <li class="list-group-item @orderpending">Order Pending</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order"
+                   asp-action="Index" asp-route-status="paymentpending">
+                <li class="list-group-item @paymentpending">Payment Pending</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order"
+                   asp-action="Index" asp-route-status="orderapproved">
+                <li class="list-group-item @orderapproved">Order Approved</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order"
+                   asp-action="Index" asp-route-status="paymentapproved">
+                <li class="list-group-item @paymentapproved">Payment Approved</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order"
+                   asp-action="Index" asp-route-status="orderprocessing">
+                <li class="list-group-item @orderprocessing">Order Processing</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order"
+                   asp-action="Index" asp-route-status="paymentrejected">
+                <li class="list-group-item @paymentrejected">Payment Rejected</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order"
+                   asp-action="Index" asp-route-status="ordershipped">
+                <li class="list-group-item @ordershipped">Order Shipped</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order"
+                   asp-action="Index" asp-route-status="all">
+                <li class="list-group-item @all">All</li>
+                </a>
+            </ul>
+        </div>
+        <div class="table-responsive">
+            <table id="orderTable" class="table table-bordered table-hover">
+                <thead>
+                    <tr class="table-info">
+                        <th>ID</th>
+                        <th>Last Name</th>
+                        <th>Phone Number</th>
+                        <th>Email</th>
+                        <th>Order Status</th>
+                        <th>Payment Status</th>
+                        <th>Total</th>
+                        <th></th>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/order.js"></script>
+}
