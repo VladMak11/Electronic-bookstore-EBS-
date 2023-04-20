@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EBW.Models.ViewModels
+namespace EBW.Models
 {
     public class OrderVM
     {

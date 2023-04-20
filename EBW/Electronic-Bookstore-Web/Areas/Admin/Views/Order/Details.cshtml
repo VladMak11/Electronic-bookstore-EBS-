@@ -1,0 +1,198 @@
+﻿@model OrderVM
+
+@{
+    ViewData["Title"] = "OrderDetails";
+}
+<partial name="_Notification" />
+<form method="post">
+    <input asp-for="OrderUserInfo.Id" hidden />
+    <div class="card shadow border-0 my-4 col-12">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-4 text-start">
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="btn btn-light mb-0">
+                        <small><i class="bi bi-arrow-bar-left"></i></small>
+                    </a>
+                </div>
+                <div class="col-6">
+                    <h1 class="text-white py-1">Order Summary Details</h1>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="container rounded p-2">
+                <div class="row">
+                    <div class="col-12 col-lg-6 pb-4 border">
+                        <div class="row">
+                            <h4 class="d-flex justify-content-between align-items-center mb-4 pt-2">
+                                <span class="text-info">Details Information for current Order:</span>
+                            </h4>
+                        </div>
+                        <div class="accordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                        Personal data User
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+                                    <div class="accordion-body">
+                                        <div class="row my-1">
+                                            <div class="col-3">First Name</div>
+                                            <div class="col-9">
+                                                <input asp-for="OrderUserInfo.FirstName" type="text" class="form-control" />
+                                                <span asp-validation-for="OrderUserInfo.FirstName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row my-1">
+                                            <div class="col-3">Last Name</div>
+                                            <div class="col-9">
+                                                <input asp-for="OrderUserInfo.LastName" type="text" class="form-control" />
+                                                <span asp-validation-for="OrderUserInfo.LastName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row my-1">
+                                            <div class="col-3">Phone Number</div>
+                                            <div class="col-9">
+                                                <input asp-for="OrderUserInfo.PhoneNumber" type="text" class="form-control" />
+                                                <span asp-validation-for="OrderUserInfo.PhoneNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row my-1">
+                                            <div class="col-3">E-mail</div>
+                                            <div class="col-9">
+                                                <input asp-for="OrderUserInfo.ApplicationUser.Email" disabled type="text" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                        Delivery data User
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="row my-1">
+                                            <div class="col-3">City</div>
+                                            <div class="col-9">
+                                                <input asp-for="OrderUserInfo.City" type="text" class="form-control" />
+                                                <span asp-validation-for="OrderUserInfo.City" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row my-1">
+                                            <div class="col-3">Carrier</div>
+                                            <div class="col-9">
+                                                <input asp-for="OrderUserInfo.Carrier" type="text" class="form-control" />
+                                                <span asp-validation-for="OrderUserInfo.Carrier" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row my-1">
+                                            <div class="col-3">Branch Office</div>
+                                            <div class="col-9">
+                                                <input asp-for="OrderUserInfo.BranchOffice" type="text" class="form-control" />
+                                                <span asp-validation-for="OrderUserInfo.BranchOffice" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row my-1">
+                                            <div class="col-3">Order Date</div>
+                                            <div class="col-9">
+                                                <input asp-for="OrderUserInfo.OrderDate" value="@Model.OrderUserInfo.OrderDate.ToString("dd/MM/yyyy HH:mm")" disabled type="text" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="row my-1">
+                                            <div class="col-3">Shipping Date</div>
+                                            <div class="col-9">
+                                                <input asp-for="OrderUserInfo.ShippingDate" type="text" class="form-control" />
+                                                <span asp-validation-for="OrderUserInfo.ShippingDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                        Payment/Order Status etc.
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="row my-1">
+                                            <div class="col-3">Order Status</div>
+                                            <div class="col-9">
+                                                <input asp-for="OrderUserInfo.OrderStatus" type="text" class="form-control" />
+                                                <span asp-validation-for="OrderUserInfo.OrderStatus" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row my-1">
+                                            <div class="col-3">Payment Status</div>
+                                            <div class="col-9">
+                                                <input asp-for="OrderUserInfo.PaymentStatus" type="text" class="form-control" />
+                                                <span asp-validation-for="OrderUserInfo.PaymentStatus" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row my-1">
+                                            <div class="col-3">TrackingNumber</div>
+                                            <div class="col-9">
+                                                <input asp-for="OrderUserInfo.TrackingNumber" type="text" class="form-control" />
+                                                <span asp-validation-for="OrderUserInfo.TrackingNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" asp-action="UpdateOrderUserInfo" class="btn btn-primary form-control my-3 bg-gradient">Update Order Details</button>
+                    </div>
+
+                    <div class="col-12 col-lg-6 pb-4 border">
+                        <div class="row">
+                            <h4 class="d-flex justify-content-between align-items-center mb-4 pt-2">
+                                <span class="text-info">Summary Order:</span>
+                            </h4>
+                        </div>
+                        <ul class="list-group mb-3 col-10 mx-auto">
+                            @foreach (var details in Model.OrderDetail)
+                            {
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="my-0">@details.Product.Title</h6>
+                                        <small class="text-muted">Quantity: @details.Count</small>
+                                        @if (details.Product.Price != null)
+                                        {
+                                            <small class="text-muted">Price: @details.Product.Price</small>
+                                        }
+                                        else
+                                        {
+                                            <small class="text-muted">Price: @details.Product.ListPrice</small>
+                                        }
+                                    </div>
+                                    @if (details.Product.Price != null)
+                                    {
+                                        <span class="text-muted">@((details.Product.Price * details.Count).Value.ToString("c")) </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">@((details.Product.ListPrice * details.Count).ToString("c")) </span>
+                                    }
+                                </li>
+                            }
+                            <li class="list-group-item d-flex justify-content-between bg-light">
+                                <small class="text-info">Total (UAH)</small>
+                                <strong class="text-info">@Model.OrderUserInfo.TotalOrderPrice.ToString("c")</strong>
+                            </li>
+                        </ul>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
