@@ -28,7 +28,7 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home&nbsp;<i class="bi bi-house"></i></a>
                         </li>
-                        @if(User.IsInRole(Role.Role_Admin))
+                        @if (User.IsInRole(Role.Role_Admin))
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="Admin" asp-controller="CoverType" asp-action="Index">Cover Type&nbsp;<i class="bi bi-circle-square"></i></a>
@@ -48,31 +48,18 @@
                         }
                     </ul>
                     <ul class="navbar-nav">
-                        @if(HttpContextAccessor.HttpContext.Session.GetInt32(Status.SessionCart) != null)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                    Shopping Cart&nbsp;<i class="bi bi-basket3-fill"></i>&nbsp;
-                                    (@HttpContextAccessor.HttpContext.Session.GetInt32(Status.SessionCart))
-                                    @* @await Component.InvokeAsync("ShoppingCart");*@
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                    Shopping Cart&nbsp;<i class="bi bi-basket3-fill"></i>&nbsp;
-                                    (0)
-                                    @* @await Component.InvokeAsync("ShoppingCart");*@
-                                </a>
-                            </li>
-                        }
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                 @await Component.InvokeAsync("ShoppingCart")
+                            </a>
+                        </li>
+
                         @if (User.IsInRole(Role.Role_Customer))
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="HistoryOrder">HistoryOrder&nbsp;<i class="bi bi-compass-fill"></i></a>
-                             </li>
+                            </li>
                         }
                     </ul>
                     <partial name="_LoginPartial" />
