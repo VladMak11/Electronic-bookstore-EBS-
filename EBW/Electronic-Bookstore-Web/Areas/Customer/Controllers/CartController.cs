@@ -186,7 +186,6 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
                 await ClearShoppingCartAsync(cart.OrderUserInfo.ApplicationUserId);
                 return View("OrderSuccesfull");
             }
-           
         }
         public async Task<IActionResult> Cancel()
         {
@@ -196,7 +195,7 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
         {
             var items = await _unitOfWork.ShoppingCart.GetAllAsync(x => x.ApplicationUserId == userId);
             await _unitOfWork.ShoppingCart.RemoveRangeAsync(items);
-            HttpContext.Session.SetInt32(Status.SessionCart, 0);
+            HttpContext.Session.Clear();
             await _unitOfWork.SaveAsync();
         }
 
