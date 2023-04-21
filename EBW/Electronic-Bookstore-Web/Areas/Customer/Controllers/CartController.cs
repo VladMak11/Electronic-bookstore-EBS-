@@ -72,6 +72,7 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
         {
             var cardFromDB = await _unitOfWork.ShoppingCart.GetFirstOrDefaultAsync(x => x.Id == cardObjId);
             await _unitOfWork.ShoppingCart.RemoveAsync(cardObjId);
+            HttpContext.Session.SetInt32(Status.SessionCart, _unitOfWork.ShoppingCart.GetAllAsync(x => x.ApplicationUserId == cardFromDB.ApplicationUserId).GetAwaiter().GetResult().Count() - 1);
             await _unitOfWork.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -168,6 +169,7 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
             if (paymentResult.state.ToLower() != "approved")
             {
                 cart.OrderUserInfo.OrderStatus = Status.StatusInProcess;
+                cart.OrderUserInfo.PaymentStatus = Status.PaymentStatusRejected;
                 await _unitOfWork.OrderUserInfo.UpdateAsync(cart.OrderUserInfo);
                 await _unitOfWork.SaveAsync();
                 var serializedObj = JsonConvert.SerializeObject(cart);

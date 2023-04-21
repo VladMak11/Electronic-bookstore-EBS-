@@ -1,7 +1,9 @@
 ﻿
 using EBW.DataAccess;
 using EBW.Models;
+using EBW.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -49,19 +51,24 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             shoppingCartObj.ApplicationUserId = userId;
 
-            ShoppingCart cartObjFromDB = await _unitOfWork.ShoppingCart.GetFirstOrDefaultAsync( x => x.ApplicationUserId == userId && x.ProductId == shoppingCartObj.ProductId);
+             ShoppingCart cartObjFromDB = await _unitOfWork.ShoppingCart.GetFirstOrDefaultAsync( x => x.ApplicationUserId == userId && x.ProductId == shoppingCartObj.ProductId);
             if(cartObjFromDB != null) 
             {
                 cartObjFromDB.Count += shoppingCartObj.Count;
                 await _unitOfWork.ShoppingCart.UpdateAsync(cartObjFromDB);
-				TempData["success"] = "Product update to card";
-			}
+                await _unitOfWork.SaveAsync();
+                //todo
+                HttpContext.Session.SetInt32(Status.SessionCart, _unitOfWork.ShoppingCart.GetAllAsync(x => x.ApplicationUserId == userId).GetAwaiter().GetResult().Count());
+                TempData["success"] = "Product update to card";
+            }
             else
             {
 				await _unitOfWork.ShoppingCart.AddAsync(shoppingCartObj);
+                await _unitOfWork.SaveAsync();
+                HttpContext.Session.SetInt32(Status.SessionCart, _unitOfWork.ShoppingCart.GetAllAsync(x => x.ApplicationUserId == userId).GetAwaiter().GetResult().Count());
 				TempData["success"] = "Product added to card";
 			}
-			await _unitOfWork.SaveAsync();
+			
 			return RedirectToAction(nameof(Index));
         }
 

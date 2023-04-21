@@ -9,6 +9,7 @@ using FluentValidation;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using EBW.DataAccess;
+using EBW.Utility;
 
 namespace Electronic_Bookstore_Web.Areas.Identity.Controllers
 {
@@ -135,6 +136,7 @@ namespace Electronic_Bookstore_Web.Areas.Identity.Controllers
                         var result = await _signInManager.PasswordSignInAsync(user, logimIM.Password, false, false);
                         if (result.Succeeded)
                         {
+                            HttpContext.Session.SetInt32(Status.SessionCart, _unitOfWork.ShoppingCart.GetAllAsync(x => x.ApplicationUserId == user.Id).GetAwaiter().GetResult().Count());
                             return RedirectToAction(nameof(Index), "Home", new { area = "Customer" });
                         }
                     }
@@ -150,6 +152,7 @@ namespace Electronic_Bookstore_Web.Areas.Identity.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            HttpContext.Session.Clear();
             return RedirectToAction(nameof(Index), "Home", new { area = "Customer" });
         }
 
