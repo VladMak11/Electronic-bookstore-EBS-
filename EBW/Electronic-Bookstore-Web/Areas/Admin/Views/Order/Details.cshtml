@@ -1,4 +1,5 @@
-﻿@model OrderVM
+﻿@using EBW.Utility;
+@model OrderVM
 
 @{
     ViewData["Title"] = "OrderDetails";
@@ -80,21 +81,21 @@
                                         <div class="row my-1">
                                             <div class="col-3">City</div>
                                             <div class="col-9">
-                                                <input asp-for="OrderUserInfo.City" type="text" class="form-control" />
+                                                <input asp-for="OrderUserInfo.City" type="text" id="city" class="form-control" />
                                                 <span asp-validation-for="OrderUserInfo.City" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="row my-1">
                                             <div class="col-3">Carrier</div>
                                             <div class="col-9">
-                                                <input asp-for="OrderUserInfo.Carrier" type="text" class="form-control" />
+                                                <input asp-for="OrderUserInfo.Carrier" id="carrier" type="text" class="form-control" />
                                                 <span asp-validation-for="OrderUserInfo.Carrier" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="row my-1">
                                             <div class="col-3">Branch Office</div>
                                             <div class="col-9">
-                                                <input asp-for="OrderUserInfo.BranchOffice" type="text" class="form-control" />
+                                                <input asp-for="OrderUserInfo.BranchOffice" id="branchOffice" type="text" class="form-control" />
                                                 <span asp-validation-for="OrderUserInfo.BranchOffice" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -107,7 +108,7 @@
                                         <div class="row my-1">
                                             <div class="col-3">Shipping Date</div>
                                             <div class="col-9">
-                                                <input asp-for="OrderUserInfo.ShippingDate" type="text" class="form-control" />
+                                                <input type="date" asp-for="OrderUserInfo.ShippingDate" class="form-control" />
                                                 <span asp-validation-for="OrderUserInfo.ShippingDate" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -127,23 +128,33 @@
                                         <div class="row my-1">
                                             <div class="col-3">Order Status</div>
                                             <div class="col-9">
-                                                <input asp-for="OrderUserInfo.OrderStatus" type="text" class="form-control" />
+                                                <input asp-for="OrderUserInfo.OrderStatus" type="text" disabled class="form-control" />
                                                 <span asp-validation-for="OrderUserInfo.OrderStatus" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="row my-1">
                                             <div class="col-3">Payment Status</div>
                                             <div class="col-9">
-                                                <input asp-for="OrderUserInfo.PaymentStatus" type="text" class="form-control" />
+                                                <input asp-for="OrderUserInfo.PaymentStatus" type="text" disabled class="form-control" />
                                                 <span asp-validation-for="OrderUserInfo.PaymentStatus" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="row my-1">
                                             <div class="col-3">TrackingNumber</div>
-                                            <div class="col-9">
-                                                <input asp-for="OrderUserInfo.TrackingNumber" type="text" class="form-control" />
-                                                <span asp-validation-for="OrderUserInfo.TrackingNumber" class="text-danger"></span>
-                                            </div>
+                                            @if (Model.OrderUserInfo.OrderStatus != Status.StatusInProcess)
+                                            {
+                                                <div class="col-9">
+                                                    <input asp-for="OrderUserInfo.TrackingNumber" type="text" id="trackingNumber" disabled class="form-control" />
+                                                    <span asp-validation-for="OrderUserInfo.TrackingNumber" class="text-danger"></span>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-9">
+                                                    <input asp-for="OrderUserInfo.TrackingNumber" type="text" id="trackingNumber" class="form-control" />
+                                                    <span asp-validation-for="OrderUserInfo.TrackingNumber" class="text-danger"></span>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -185,14 +196,62 @@
                                 </li>
                             }
                             <li class="list-group-item d-flex justify-content-between bg-light">
-                                <small class="text-info">Total (UAH)</small>
+                                <small class="text-info">Total ($)</small>
                                 <strong class="text-info">@Model.OrderUserInfo.TotalOrderPrice.ToString("c")</strong>
                             </li>
                         </ul>
-                        
+                        @if (Model.OrderUserInfo.OrderStatus == Status.StatusApproved)
+                        {
+                            <button type="submit" asp-action="StartProcessing"  class="btn btn-success form-control my-3 bg-gradient">Start Processing </button>
+                        }
+                        @if (Model.OrderUserInfo.OrderStatus == Status.StatusInProcess)
+                        {
+                            <button type="submit" asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-danger form-control my-3 bg-gradient">Ship Order</button>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function validateInput() {
+            if (document.getElementById("city").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter City!',
+                });
+                return false;
+            }
+            if (document.getElementById("carrier").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter carrier!',
+                });
+                return false;
+            }
+            if (document.getElementById("branchOffice").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter Branch Office!',
+                });
+                return false;
+            }
+            if (document.getElementById("trackingNumber").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter tracking number!',
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
+}

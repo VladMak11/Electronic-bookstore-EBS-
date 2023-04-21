@@ -121,6 +121,7 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
 
                 ShoppingCartVM.ShoppingCartList = await _unitOfWork.ShoppingCart.GetAllAsync(x => x.ApplicationUserId == userId, "Product");
                 ShoppingCartVM.OrderUserInfo.OrderDate = DateTime.Now;
+                ShoppingCartVM.OrderUserInfo.ShippingDate= DateTime.Now.AddDays(7);
                 ShoppingCartVM.OrderUserInfo.ApplicationUserId = userId;
                 //? check 
                 ShoppingCartVM.OrderUserInfo.ApplicationUser = await _userManager.GetUserAsync(User);

@@ -54,6 +54,39 @@ namespace Electronic_Bookstore_Web.Areas.Admin.Controllers
             TempData["Success"] = "Order Details Updated";
             return RedirectToAction(nameof(Details), new { id = orderUserInfoFromDb.Id });
         }
+        [HttpPost]
+        public async Task<IActionResult> StartProcessing()
+        {
+            var orderUserInfoFromDb = await _unitOfWork.OrderUserInfo.GetFirstOrDefaultAsync(x => x.Id == OrderVM.OrderUserInfo.Id);
+           
+            orderUserInfoFromDb.OrderStatus = Status.StatusInProcess;
+            await _unitOfWork.OrderUserInfo.UpdateAsync(orderUserInfoFromDb);
+            await _unitOfWork.SaveAsync();
+            TempData["Success"] = "Order Details Updated";
+            return RedirectToAction(nameof(Details), new { id = orderUserInfoFromDb.Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ShipOrder()
+        {
+            var orderUserInfoFromDb = await _unitOfWork.OrderUserInfo.GetFirstOrDefaultAsync(x => x.Id == OrderVM.OrderUserInfo.Id);
+            orderUserInfoFromDb.FirstName = OrderVM.OrderUserInfo.FirstName;
+            orderUserInfoFromDb.LastName = OrderVM.OrderUserInfo.LastName;
+            orderUserInfoFromDb.PhoneNumber = OrderVM.OrderUserInfo.PhoneNumber;
+            orderUserInfoFromDb.City = OrderVM.OrderUserInfo.City;
+            orderUserInfoFromDb.Carrier = OrderVM.OrderUserInfo.Carrier;
+            orderUserInfoFromDb.BranchOffice = OrderVM.OrderUserInfo.BranchOffice;
+            orderUserInfoFromDb.ShippingDate = OrderVM.OrderUserInfo.ShippingDate;
+            orderUserInfoFromDb.TrackingNumber = OrderVM.OrderUserInfo.TrackingNumber;
+            orderUserInfoFromDb.OrderStatus = OrderVM.OrderUserInfo.OrderStatus;
+
+            orderUserInfoFromDb.OrderStatus = Status.StatusShipped;
+
+            await _unitOfWork.OrderUserInfo.UpdateAsync(orderUserInfoFromDb);
+            await _unitOfWork.SaveAsync();
+            TempData["Success"] = "Order Shipped";
+            return RedirectToAction(nameof(Details), new { id = orderUserInfoFromDb.Id });
+        }
 
         #region API CALLS
         [HttpGet]
