@@ -40,13 +40,13 @@
                             <div class="row ps-2">
                                 <h6 class="text-dark text-opacity-75 pb-2">
                                     List Price:
-                                    <span style="color: gray;text-decoration: line-through;text-decoration-color: red;text-decoration-thickness: 2px;"> @Model.Product.ListPrice.ToString("c") </span>
+                                    <span style="color: gray;text-decoration: line-through;text-decoration-color: red;text-decoration-thickness: 2px;"> @Model.Product.ListPrice <i class="bi bi-currency-dollar"></i> </span>
                                 </h6>
                             </div>
                             <div class="row ps-2">
                                 <h6 class="text-dark text-opacity-75 pb-1">
                                     NEW Price:
-                                    <span> @Model.Product.Price.Value.ToString("c") </span>
+                                    <span> @Model.Product.Price.Value <i class="bi bi-currency-dollar"></i> </span>
                                 </h6>
                             </div>
                         }
@@ -55,7 +55,7 @@
                             <div class="row ps-2">
                                 <h6 class="text-dark text-opacity-75 pb-2">
                                     List Price:
-                                    <span> @Model.Product.ListPrice.ToString("c") </span>
+                                    <span> @Model.Product.ListPrice <i class="bi bi-currency-dollar"></i> </span>
                                 </h6>
                             </div>
                         }

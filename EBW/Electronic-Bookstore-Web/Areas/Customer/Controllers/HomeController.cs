@@ -57,7 +57,6 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
                 cartObjFromDB.Count += shoppingCartObj.Count;
                 await _unitOfWork.ShoppingCart.UpdateAsync(cartObjFromDB);
                 await _unitOfWork.SaveAsync();
-                //todo
                 HttpContext.Session.SetInt32(Status.SessionCart, _unitOfWork.ShoppingCart.GetAllAsync(x => x.ApplicationUserId == userId).GetAwaiter().GetResult().Count());
                 TempData["success"] = "Product update to card";
             }

@@ -41,7 +41,7 @@
                                     {
                                         <div class="pl-1">
                                             <p class="text-dark text-opacity-75 text-center mb-0">
-                                                SALE Price: <span> @item.Product.Price.Value.ToString("c") </span>
+                                                SALE Price: <span> @item.Product.Price.Value <i class="bi bi-currency-dollar"></i> </span>
                                             </p>
                                         </div>
                                     }
@@ -49,7 +49,7 @@
                                     {
                                         <div class="pl-1">
                                             <p class="text-dark text-opacity-75 text-center mb-4">
-                                                Price: <span>@item.Product.ListPrice.ToString("c") </span>
+                                                Price: <span>@item.Product.ListPrice <i class="bi bi-currency-dollar"></i> </span>
                                             </p>
                                         </div>
                                     }
@@ -98,8 +98,8 @@
                     <div class="col-md-4 offset-md-4">
                         <ul class="list-group mb-4">
                             <li class="d-flex justify-content-between align-items-center">
-                                <h4 class="text-dark fw-semibold text-uppercase"> Total (UAH)</h4>
-                                <h4 class="text-dark fw-bolder">@Model.OrderUserInfo.TotalOrderPrice.ToString("c")</h4>
+                                <h4 class="text-dark fw-semibold text-uppercase"> Total (<i class="bi bi-currency-dollar"></i>)</h4>
+                                <h4 class="text-dark fw-bolder">@Model.OrderUserInfo.TotalOrderPrice <i class="bi bi-currency-dollar"></i></h4>
                             </li>
                         </ul>
                     </div>

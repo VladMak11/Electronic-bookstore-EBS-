@@ -77,17 +77,17 @@
                                         </div>
                                         @if (details.Product.Price != null)
                                         {
-                                            <span class="text-muted">@((details.Product.Price * details.Count).Value.ToString("c")) </span>
+                                            <span class="text-muted">@((details.Product.Price * details.Count).Value) <i class="bi bi-currency-dollar"></i></span>
                                         }
                                         else
                                         {
-                                            <span class="text-muted">@((details.Product.ListPrice * details.Count).ToString("c")) </span>
+                                            <span class="text-muted">@((details.Product.ListPrice * details.Count)) <i class="bi bi-currency-dollar"></i></span>
                                         }
                                     </li>
                                 }
                                 <li class="list-group-item d-flex justify-content-between bg-light">
-                                    <small class="text-info">Total (UAH)</small>
-                                    <strong class="text-info">@Model.OrderUserInfo.TotalOrderPrice.ToString("c")</strong>
+                                    <small class="text-info">Total (<i class="bi bi-currency-dollar"></i>)</small>
+                                    <strong class="text-info">@Model.OrderUserInfo.TotalOrderPrice <i class="bi bi-currency-dollar"></i></strong>
                                 </li>
                             </ul>
                         </div>

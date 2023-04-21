@@ -31,12 +31,12 @@
 						{
 							<div class="pl-1">
 								<p class="text-dark text-opacity-75 text-center mb-0">
-									List Price: <span style="color: gray;text-decoration: line-through;text-decoration-color: red;text-decoration-thickness: 2px;"> @product.ListPrice.ToString("c") </span>
+									List Price: <span style="color: gray;text-decoration: line-through;text-decoration-color: red;text-decoration-thickness: 2px;"> @product.ListPrice <i class="bi bi-currency-dollar"></i> </span>
 								</p>
 							</div>
 							<div class="pl-1">
 								<p class="text-dark text-opacity-75 text-center mb-0">
-									NEW Price: <span> @product.Price.Value.ToString("c") </span>
+									NEW Price: <span> @product.Price.Value <i class="bi bi-currency-dollar"></i> </span>
 								</p>
 							</div>
 						}
@@ -44,7 +44,7 @@
 						{
 							<div class="pl-1">
 								<p class="text-dark text-opacity-75 text-center mb-4">
-									List Price: <span> @product.ListPrice.ToString("c") </span>
+									List Price: <span> @product.ListPrice <i class="bi bi-currency-dollar"></i> </span>
 								</p>
 							</div>
 						}

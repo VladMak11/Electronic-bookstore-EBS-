@@ -196,6 +196,7 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
         {
             var items = await _unitOfWork.ShoppingCart.GetAllAsync(x => x.ApplicationUserId == userId);
             await _unitOfWork.ShoppingCart.RemoveRangeAsync(items);
+            HttpContext.Session.SetInt32(Status.SessionCart, 0);
             await _unitOfWork.SaveAsync();
         }
 
