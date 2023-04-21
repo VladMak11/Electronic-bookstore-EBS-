@@ -35,11 +35,11 @@ namespace Electronic_Bookstore_Web.Areas.Identity.Controllers
         [HttpGet]
         public async Task<IActionResult> Register() 
         {
-            //if (!_roleManager.RoleExistsAsync(Role.Role_Customer).GetAwaiter().GetResult())
-            //{
-            //    _roleManager.CreateAsync(new IdentityRole(Role.Role_Customer)).GetAwaiter().GetResult();
-            //    _roleManager.CreateAsync(new IdentityRole(Role.Role_Admin)).GetAwaiter().GetResult();
-            //}
+            if (!_roleManager.RoleExistsAsync(Role.Role_Customer).GetAwaiter().GetResult())
+            {
+                _roleManager.CreateAsync(new IdentityRole(Role.Role_Customer)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(Role.Role_Admin)).GetAwaiter().GetResult();
+            }
             //ApplicationUser user = new ApplicationUser()
             //{
             //    Email = "admin@gmail.com",
@@ -50,19 +50,7 @@ namespace Electronic_Bookstore_Web.Areas.Identity.Controllers
             //};
             //var resultUserResponce = await _userManager.CreateAsync(user, "VladM20472019");
 
-            //if (resultUserResponce.Succeeded)
-            //{
-            //    await _userManager.AddToRoleAsync(user, Role.Role_Admin);
-            //    return View("SuccessRegistration");
-            //}
-            //NovaPoshtaService novaPoshtaService = new NovaPoshtaService(_config);
-            //var request = new SettlementsRequest()
-            //{
-            //    CityName = "київ",
-            //    Limit = "50",
-            //    Page = "1"
-            //};
-            //await novaPoshtaService.GetCitiesAsync(request);
+
 
             return View(new InputModelforRegistration());
         }

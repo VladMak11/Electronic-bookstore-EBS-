@@ -36,8 +36,8 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential= true;
 });
 
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-//builder.Services.AddScoped<INovaPoshtaService, NovaPoshtaService>();
 builder.Services.AddScoped<IPayPalService, PayPalService>();
 
 var app = builder.Build();
@@ -57,6 +57,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
+InitializeDB();
 
 app.MapControllerRoute(
     name: "default",
@@ -64,3 +65,13 @@ app.MapControllerRoute(
 
 
 app.Run();
+
+
+void InitializeDB()
+{
+    using(var item = app.Services.CreateScope())
+    {
+        var DbInitializer = item.ServiceProvider.GetRequiredService<IDbInitializer>();
+        DbInitializer.Initialize();
+    }
+}

@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EBW.Models\EBW.Models.csproj" />
+    <ProjectReference Include="..\Utility\EBW.Utility.csproj" />
   </ItemGroup>
 
 </Project>
