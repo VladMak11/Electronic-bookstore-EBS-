@@ -15,13 +15,13 @@ namespace Electronic_Bookstore_Web.PayPalApi
             _config = config;
         }
 
-        public async Task<string> PaymentAsync(HttpContext http)
+        public async Task<string> PaymentAsync(HttpContext http, MapOrderData mapOrderData)
         {
             // Get the API context and create a payment
             var apiContext = PayPalConfiguration.GetAPIContext(_config.GetValue<string>("PayPal:ClientId"), _config.GetValue<string>("PayPal:ClientSecret"), _config.GetValue<string>("PayPal:Mode"));
 
-            var guid = Convert.ToString((new Random()).Next(100000));
-            var createdPayment =  await CreatePaymentAsync(apiContext, guid, http);
+            //var guid = Convert.ToString((new Random()).Next(100000));
+            var createdPayment =  await CreatePaymentAsync(apiContext/*, guid*/, http, mapOrderData);
 
             // Save the payment ID to the user's session so we can execute the payment later
             http.Session.SetString("paymentId", createdPayment.id);
@@ -54,51 +54,8 @@ namespace Electronic_Bookstore_Web.PayPalApi
             var executedPayment =  payment.Execute(apiContext, paymentExecution);
              return executedPayment;
         }
-        private async Task<Payment> CreatePaymentAsync(APIContext apiContext, string guid, HttpContext http)
+        private async Task<Payment> CreatePaymentAsync(APIContext apiContext, /*string guid,*/ HttpContext http, MapOrderData mapOrderData)
         {
-            // Set up the payment details, including the total amount, currency, and item details
-            var itemList = new ItemList()
-            {
-                items = new List<Item>()
-                    {
-                        new Item()
-                        {
-                            name = "Example Item",
-                            currency = "USD",
-                            price = "10",
-                            quantity = "1",
-                            sku = "sku"
-                        }
-                    }
-            };
-
-            var details = new Details()
-            {
-                tax = "0",
-                shipping = "0",
-                subtotal = "10"
-            };
-
-            var amount = new Amount()
-            {
-                currency = "USD",
-                total = "10",
-                details = details
-            };
-
-            var transaction = new Transaction()
-            {
-                description = "Example Transaction",
-                invoice_number = guid,
-                amount = amount,
-                item_list = itemList
-            };
-
-            var transactions = new List<Transaction>()
-                {
-                    transaction
-                };
-
             // Set up the redirect URLs for the user, including where to go on success or cancel
             var baseUrl = $"{http.Request.Scheme}://{http.Request.Host}";
             var returnUrl = $"{baseUrl}/Customer/Cart/Success";
@@ -108,7 +65,7 @@ namespace Electronic_Bookstore_Web.PayPalApi
             {
                 intent = "sale",
                 payer = new Payer() { payment_method = "paypal" },
-                transactions = transactions,
+                transactions = mapOrderData.TransactionList,
                 redirect_urls = new RedirectUrls()
                 {
                     cancel_url = cancelUrl,

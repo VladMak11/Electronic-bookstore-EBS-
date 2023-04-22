@@ -150,13 +150,52 @@ namespace Electronic_Bookstore_Web.Areas.Customer.Controllers
                     await _unitOfWork.OrderDetailsProduct.AddAsync(orderDetailsProduct);
                     await _unitOfWork.SaveAsync();
                 }
+            // Set up the payment details, including the total amount, currency, and item details
+            var guid = Convert.ToString((new Random()).Next(100000));
+            MapOrderData mapOrderData = new MapOrderData()
+                {
+                    ItemList = new ItemList()
+                    {
+                        items = ShoppingCartVM.ShoppingCartList.Select(x => new Item()
+                        {
+                            name = x.Product.Title,
+                            currency = "USD",
+                            price = (x.Product.Price ?? x.Product.ListPrice).ToString().Replace(',','.'),
+                            quantity = x.Count.ToString(),
+                            sku = "sku"
+                        }).ToList()
+                    },
+                    Details = new Details()
+                    {
+                        tax = "0",
+                        shipping = "0",
+                        subtotal = ShoppingCartVM.OrderUserInfo.TotalOrderPrice.ToString().Replace(',', '.')
+                    }
+                };
+            mapOrderData.Amount = new Amount()
+            {
+                currency = "USD",
+                total = ShoppingCartVM.OrderUserInfo.TotalOrderPrice.ToString().Replace(',', '.'),
+                details = mapOrderData.Details
+            };
+            mapOrderData.TransactionList = new List<Transaction>()
+            {
+                new Transaction()
+                {
+                    description = "Pay Order",
+                    invoice_number = guid,
+                    amount = mapOrderData.Amount,
+                    item_list = mapOrderData.ItemList
+                }
+            };
 
-                var paypalurl = await _payPalService.PaymentAsync(HttpContext);
+           var paypalurl = await _payPalService.PaymentAsync(HttpContext, mapOrderData);
 
                 var serializedObj = JsonConvert.SerializeObject(ShoppingCartVM);
                 TempData["CurrentInfoOrder"] = serializedObj;
                 return Redirect(paypalurl);
         }
+
         public async Task<IActionResult> Success()
         {
             ShoppingCartVM cart = new();
