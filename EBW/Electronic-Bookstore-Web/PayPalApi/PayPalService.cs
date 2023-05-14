@@ -54,7 +54,7 @@ namespace Electronic_Bookstore_Web.PayPalApi
             var executedPayment =  payment.Execute(apiContext, paymentExecution);
              return executedPayment;
         }
-        private async Task<Payment> CreatePaymentAsync(APIContext apiContext, /*string guid,*/ HttpContext http, MapOrderData mapOrderData)
+        private async Task<Payment> CreatePaymentAsync(APIContext apiContext, HttpContext http, MapOrderData mapOrderData)
         {
             // Set up the redirect URLs for the user, including where to go on success or cancel
             var baseUrl = $"{http.Request.Scheme}://{http.Request.Host}";

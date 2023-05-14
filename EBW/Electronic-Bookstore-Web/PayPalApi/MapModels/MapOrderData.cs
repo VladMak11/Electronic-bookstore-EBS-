@@ -9,7 +9,5 @@ namespace Electronic_Bookstore_Web
         public Amount Amount { get; set; }
         public List<Transaction> TransactionList { get; set; }
       
-        
-        
     }
 }
